@@ -1,5 +1,5 @@
 # KASIRO BRAIN
-**Version:** 1.0 | **Last updated:** 2026-07-03 | **Updated by:** operator
+**Version:** 1.1 | **Last updated:** 2026-07-03
 
 ---
 
@@ -31,37 +31,64 @@ Kasiro (kasiro.app) is Africa's prediction trading marketplace. Users deposit US
 
 ---
 
-## Operating Principles (non-negotiable)
+## Shared Doctrine
 
-1. **Convention-by-Enforcement** — repeated bugs must be enforced by code, not comments
-2. **Done Means Done** — shipped = deployed + hardened + scenario-tested
-3. **One Pillar One Week** — finite weekly hour budget; one focus area; nothing added mid-week
-4. **Research Before Suggesting** — always web-search the underlying event before recommending a market; verify it hasn't happened and prior is 20–80%
-5. **AMM helpers always** — never inline pool math; always call `poolsAfterBuy`/`poolsAfterSell` from `amm.ts`
-6. **Operator control** — agents only suggest; operator decides what to publish, edit, resolve, or price
+**Read `KASIRO_DOCTRINE.md` before any agent spec or domain file.** The 15 doctrine rules override everything else.
 
 ---
 
-## Domain Files (read these for full context)
+## Connected Agent Loop
 
-| File | Owned by | What it holds |
-|---|---|---|
-| `domains/markets.md` | Market Brain agent | Active board state, pipeline design, current wave, rejected ideas |
-| `domains/content.md` | Marketing agent | Brand voice, channel rules, content calendar, engagement workflow |
-| `domains/competitors.md` | Market Brain + Marketing agents | Live competitor snapshots, pricing benchmarks, category gaps |
-| `domains/product.md` | Product agent | Open items, decisions, conversion strategy, roadmap priorities |
-| `domains/eng.md` | Engineering agent | Tech stack, AMM rules, guardrails, open engineering issues |
+```
+Market opportunity
+→ Market Brain validates/drafts
+→ Marketing Brain distributes
+→ Product Brain prioritises fixes/features
+→ Engineering Brain creates Replit prompts
+→ Operator Brain decides what ships/promotes/fixes today
+→ brain_update writes back to shared state
+```
 
 ---
 
 ## Agent Directory
 
-| Agent | Skill name | What it does |
+| Agent | Skill name | Purpose |
 |---|---|---|
-| Market Brain | `kasiro-market-brain` | Scans, audits, prices, and drafts admin-ready market fields |
-| Marketing | `kasiro-marketing` | Drafts content, plans calendars, writes campaign and engagement copy |
-| Product | `kasiro-product` | Weekly reviews, roadmap prioritisation, decision memos, feature specs |
-| Engineering | `kasiro-engineering` | Replit prompts, bug diagnosis, phase specs, architecture decisions |
+| Operator Brain | `kasiro-operator` | Daily operating board — decides what happens today |
+| Market Brain | `kasiro-market-brain` | Validates, prices, and drafts safe publishable markets |
+| Marketing Brain | `kasiro-marketing` | Distribution — X, Instagram, Threads. Autopost. Reply hunting. |
+| Product Brain | `kasiro-product` | Chooses what to build, fix, defer, or kill |
+| Engineering Brain | `kasiro-engineering` | Safe Replit prompts with acceptance tests |
+
+---
+
+## Domain Files
+
+| File | Owned by | What it holds |
+|---|---|---|
+| `domains/markets.md` | Market Brain | Pipeline doctrine, board state, close-time rules, rejected ideas |
+| `domains/content.md` | Marketing Brain | Brand voice, channel rules, autopost rules, reply hunting state |
+| `domains/competitors.md` | Market Brain + Marketing Brain | Competitor snapshots, pricing benchmarks, category gaps |
+| `domains/product.md` | Product Brain | Open items, decisions, roadmap priorities, decision memos |
+| `domains/eng.md` | Engineering Brain | Tech stack, AMM guardrails, DB rules, open engineering issues |
+
+---
+
+## Shared State Tables (pending implementation in Kasiro codebase)
+
+| Table | Purpose |
+|---|---|
+| `brain_updates` | Append-only memory and coordination ledger |
+| `market_requests` | Hot topics flagged with no live market |
+| `signals` | Event and market intelligence for all agents |
+| `ops_issues` | Bugs, settlement problems, trust issues (SEV0–SEV4) |
+| `decision_memos` | Product decision traceability |
+| `social_campaigns` | Autopost campaign tracking |
+| `social_posts` | Individual platform posts with status/approval state |
+| `social_creatives` | Generated/approved image assets per platform |
+
+Run `/eng phase-spec --spec "shared state tables"` to generate the Replit implementation prompt.
 
 ---
 

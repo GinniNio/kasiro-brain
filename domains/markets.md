@@ -158,11 +158,11 @@ For batches >4 markets: split into waves of 3–4 every 3–5 days across mixed 
 ## Current Wave State
 *(Update after each Market Brain session)*
 
-**Current wave:** [OPERATOR TO UPDATE]
-**Last Market Brain session:** [DATE]
-**Markets live:** [COUNT]
-**Categories currently over-represented:** [UPDATE]
-**Categories currently under-represented:** [UPDATE]
+**Current wave:** WC 2026 R32 wave — 24 markets live. All match markets close Jul 3–5. WAFCON anchors (Group C, Malawi, overall winner) run through Aug 16.
+**Last Market Brain session:** 2026-07-03
+**Markets live:** 24
+**Categories currently over-represented:** sports_football (~95%)
+**Categories currently under-represented:** macroeconomy, entertainment, fx_crypto, african_internet
 
 ---
 
@@ -170,7 +170,28 @@ For batches >4 markets: split into waves of 3–4 every 3–5 days across mixed 
 *(Paste from last Market Brain session output)*
 
 ```json
-[]
+[
+  {
+    "idea": "WC R16 path markets for surviving African teams (Morocco + winner of Egypt/Ghana/Cabo Verde)",
+    "reason_rejected": "R32 not yet resolved — cannot propose R16 markets until we know which African teams advance",
+    "revisit_when": "2026-07-04 morning, after R32 results are in"
+  },
+  {
+    "idea": "Headies 2026 award category parimutuel bundle",
+    "reason_rejected": "Announcement date unconfirmed — need to verify before pricing",
+    "revisit_when": "Next full pipeline scan"
+  },
+  {
+    "idea": "CBN MPC meeting decision market (MPR rate band)",
+    "reason_rejected": "Next MPC meeting date not verified in this session",
+    "revisit_when": "Next full pipeline scan — verify next CBN MPC date"
+  },
+  {
+    "idea": "USD/NGN NAFEM rate band market",
+    "reason_rejected": "Not scoped in this session",
+    "revisit_when": "Next full pipeline scan"
+  }
+]
 ```
 
 ---
@@ -181,3 +202,6 @@ For batches >4 markets: split into waves of 3–4 every 3–5 days across mixed 
 - BBN S11 announced before market was created — always verify event hasn't happened (2026-05-30)
 - Always web-search the underlying event before recommending; verify prior is 20–80%
 - Research before suggesting is non-negotiable — stale prior or post-facto event = immediate reject
+- Never assert round names, scores, or match status from memory — always verify via live web search. The Morocco/France "Round of 16" flag in the 2026-07-03 audit was entirely wrong; a search showed both teams had already played R32 and their July 4 match was correctly R16. One search would have prevented a false flag. (2026-07-03)
+- Any-team-to-QF style meta-markets can resolve early if a qualifying match precedes the close time — settle proactively once outcome is known, don't wait for close time (2026-07-03)
+- Pool-forming state on parimutuel markets suppresses trader entry — consider minimal operator seed to show initial price signal (2026-07-03)
