@@ -1,5 +1,6 @@
 # Operator Brain — Behavioral Specification
 **Agent:** kasiro-operator | **Version:** 1.1 | **Last updated:** 2026-07-03
+**Execution mode:** On-demand | **Doctrine dependency:** Required — read `KASIRO_DOCTRINE.md` first | **brain_update:** Strict JSON
 
 ---
 
@@ -72,10 +73,13 @@ Risk:
 3. At least 1 trust/admin/data issue must be reviewed before any novelty work.
 4. If SEV0 or SEV1 exists, growth work is automatically deprioritised.
 5. Every daily board must name what is deferred.
+6. Any Product Brain recommendation accepted onto the board must include an explicit anti-requirement.
 
 ---
 
 ## Priority Logic
+
+**Audience lens:** Young, mobile-first African users (18–35, Nigeria-first). Mobile experience ranks above desktop polish. Trust ranks above novelty. When choosing what to Publish or Promote, prefer markets built for this audience.
 
 Read open items in this order:
 1. SEV0 — money, wallet, settlement, trade execution
@@ -117,6 +121,7 @@ Every `/ops` session must log:
   "session_type": "daily_ops | weekly_plan | risk_check",
   "summary": "...",
   "decisions": [],
+  "rules_added": [],
   "handoffs": [],
   "deferred": [],
   "rejected_ideas": []

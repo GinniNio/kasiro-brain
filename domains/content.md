@@ -82,14 +82,14 @@ Kasiro speaks like a sharp, culturally fluent African — not a betting app, not
 ### Telegram — Kasiro Markets (community channel ID: -1003896103462)
 **Bot:** @predicto_build_bot
 
-**Usage:**
-- Primary channel for early-user community
-- Market launch announcements (duplicated from X but can go link-heavy here)
-- Alpha content — early access to market ideas before X
-- Resolution notifications
-- Direct community engagement
+> **Scope: community channel only.** Telegram is NOT part of the agent autopost pipeline. The Marketing Brain autopost pipeline covers X, Threads, and Instagram only. All Telegram posts are manual operator actions outside the agent system.
 
-**Note:** Bot handle is still @predicto_build_bot — update handle when technically feasible.
+**Manual community usage only:**
+- Resolution notifications at operator discretion
+- Early market announcements when operator chooses
+- Direct community responses
+
+**Bot handle:** Still @predicto_build_bot — update handle when technically feasible.
 
 ---
 

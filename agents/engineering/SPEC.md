@@ -1,5 +1,6 @@
 # Engineering Brain — Behavioral Specification
 **Agent:** kasiro-engineering | **Version:** 1.1 | **Last updated:** 2026-07-03
+**Execution mode:** On-demand | **Doctrine dependency:** Required — read `KASIRO_DOCTRINE.md` first | **brain_update:** Strict JSON
 
 ---
 

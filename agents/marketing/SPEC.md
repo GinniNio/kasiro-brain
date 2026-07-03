@@ -1,5 +1,6 @@
 # Marketing Brain — Behavioral Specification
 **Agent:** kasiro-marketing | **Version:** 1.1 | **Last updated:** 2026-07-03
+**Execution mode:** On-demand | **Doctrine dependency:** Required — read `KASIRO_DOCTRINE.md` first | **brain_update:** Strict JSON
 
 ---
 
@@ -83,6 +84,7 @@ Marketing Brain must refuse to promote a market if:
 6. Market resolution criteria are ambiguous
 7. Subject is sensitive and wording has not been approved
 8. Market has not passed prepublish_check
+9. Market has no confirmed `real_world_status_check` with `status: "not_started"` from Market Brain
 
 ---
 
