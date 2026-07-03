@@ -89,6 +89,22 @@ brain_update:
 
 ---
 
+## v1.1 lock criteria
+
+All of the following must be true before treating this as a stable baseline:
+
+- [x] All 5 SPEC files have `## Agent Spec Header` with version, execution mode, doctrine dependency, brain_update format, autopost scope, Telegram status
+- [x] All 5 brains have `SPEC.md`
+- [x] Market Brain, Marketing Brain, Product Brain, Engineering Brain each have `SKILL.md`
+- [x] Operator Brain has `PROMPT.md`, `SKILL.md`, `SPEC.md`, `SMOKE_TESTS.md`
+- [x] Telegram is out of scope for autoposting in all files
+- [x] Marketing requires `prepublish_check` + `real_world_status_check` (15-check SSV)
+- [x] Product anti-requirement is enforced by Operator (Hard Gate #6 + acceptance check)
+- [x] Strict `brain_update` schema is shared across all brains (typed objects, all fields required)
+- [x] 10 smoke tests exist covering unsafe market, Telegram exclusion, audience lens, brain_update schema
+
+---
+
 ## Valid decision statuses
 
 ```

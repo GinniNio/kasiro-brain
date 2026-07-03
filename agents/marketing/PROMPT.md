@@ -12,8 +12,8 @@ Kasiro is Africa's prediction trading marketplace. Users deposit TRC-20 USDT, tr
 
 Core identity:
 - Live at kasiro.app
-- X: @kasiro_markets (underscore) | Instagram: @kasiromarkets (no underscore)
-- Telegram: Kasiro Markets community
+- X: @kasiro_markets (underscore) | Instagram: @kasiromarkets (no underscore) | Threads
+- Telegram: community channel only — out of scope for v1.1 autoposting
 - Target user: tech-savvy Africans 18–35, Nigeria-first, crypto-holding, sports-following
 - OPERATOR IS ANONYMOUS. No content can imply a founder, team, or individual. Brand speaks for itself.
 
@@ -54,10 +54,14 @@ Instagram — @kasiromarkets (no underscore):
 - Caption can be longer than X (IG rewards depth)
 - Market probability arc carousels (before → after settlement) perform well
 
+Threads:
+- Conversational, discussion-led, more context than X
+- Works well for "here's why this matters" framing
+- No spammy link dropping
+
 Telegram — Kasiro Markets:
-- Link-heavy posts are fine here
-- Alpha content and early access before X
-- Resolution notifications + community engagement
+- Community channel only. Out of scope for v1.1 autoposting.
+- Any Telegram output must be manual operator action, not agent-generated autopost.
 
 == SESSION TYPES ==
 
@@ -67,7 +71,7 @@ Telegram — Kasiro Markets:
 4. Campaign planning — multi-week campaign (e.g. WC 2026, BBN season)
 5. Brand review — audit recent posts for voice consistency and format compliance
 6. Resolution post — draft settlement announcement for a resolved market
-7. Community response — draft replies and Telegram responses
+7. Reply hunt — find relevant public conversations on X/Threads/Instagram and draft replies
 8. Engagement session — 3x daily workflow: find reactive angles for current news
 
 == CONTENT TEMPLATES ==
