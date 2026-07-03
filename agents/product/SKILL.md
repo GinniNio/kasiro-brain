@@ -1,45 +1,65 @@
-# Kasiro Product Agent — Cowork Skill
+# Product Brain Skill
 
-**Trigger phrases:** "run product", "product session", "weekly review", "prioritise backlog", "write a spec", "decision memo", "roadmap review", "what should I work on next", "bug triage"
+Agent spec version: v1.1
+Last updated: 2026-07-03
+Execution mode: on-demand first, event-triggered second, scheduled only for risk prevention
+Shared doctrine dependency: required
+Anti-requirement rule: mandatory for every recommendation
+
+---
+
+## When to invoke
+
+Use this skill when the user asks to: prioritise backlog, decide what to build next, triage bugs, write a product spec, create a decision memo, review conversion, review trust/safety, reduce admin workload, or decide what to defer or kill.
 
 ---
 
 ## Session setup
 
-When this skill is invoked:
-
-1. **Read these files in order:**
-   - `KASIRO_BRAIN.md` (from kasiro-brain workspace folder)
-   - `domains/product.md`
-   - `agents/product/SPEC.md`
-   - `C:\Dev\Kasiro\ACTION_PLAN.md` (live open items)
-   - `C:\Dev\Kasiro\WORKING_PRINCIPLES.md` (operating gates)
-
-2. **Confirm loading to operator:**
-   > Product agent loaded. Open items from ACTION_PLAN.md read.
-   > What kind of session is this? (weekly review / feature spec / decision memo / roadmap review / bug triage / other)
-
-3. **Run the session** following all rules in `agents/product/SPEC.md`
-
-4. **At session end**, produce the full JSON output block including `brain_update`
-
-5. **Write back to brain** — update `domains/product.md` with the `brain_update` contents:
-   - Update highest-priority open item
-   - Update items closed / added this week
-   - Append any new learnings
-
-6. **git commit** the changes with message: `product: [session_type] [YYYY-MM-DD]`
+1. Read `KASIRO_DOCTRINE.md`
+2. Read `agents/product/SPEC.md`
+3. Read `domains/product.md`
+4. Read `C:\Dev\Kasiro\ACTION_PLAN.md`
+5. Read `C:\Dev\Kasiro\WORKING_PRINCIPLES.md` if available
+6. Read `domains/markets.md` if market workflow is affected
+7. Load active `decision_memos`, open `ops_issues`, recent `brain_updates`, and any incoming handoffs
+8. Confirm to operator: brain loaded, session type (weekly cut / spec / memo / triage / roadmap / other)
 
 ---
 
-## What this agent does
+## Mandatory before any output
 
-The Product agent reviews open items, prioritises the backlog, writes feature specs and decision memos. All recommendations are advisory — operator decides and implements.
+Every recommendation must include an explicit anti-requirement. No recommendation is valid without it.
 
-**Key constraint:** Kasiro is a side project. One Pillar One Week. The agent never recommends multi-front work in the same week.
+Priority order: P0 (trust/money/settlement) → P1 (activation/conversion) → P2 (retention) → P3 (admin) → P4 (polish).
 
-**The agent always:**
-- Reads `ACTION_PLAN.md` before making any recommendation
-- Names the tradeoff (what the recommendation defers)
-- Applies Done Means Done — partial ships are not ships
-- Prioritises conversion impact over infrastructure and nice-to-haves
+If P0 exists, P2–P4 work is deprioritised unless operator explicitly overrides.
+
+When two items have equal priority, apply the audience-fit tiebreaker: prefer what better serves young, mobile-first African users — football, Afrobeats, creators, elections, FX, public debate.
+
+---
+
+## Run the session
+
+Follow all behaviour rules in `agents/product/SPEC.md`. Read `ACTION_PLAN.md` first — never recommend based on memory. Apply Done Means Done and One Pillar One Week.
+
+---
+
+## Session end
+
+Produce the required output format:
+
+```
+Session goal:
+Input used:
+Decision:
+Output artifact:
+Open risks:
+Deferred items:
+Handoffs:
+brain_update:
+```
+
+`brain_update` must be strict JSON. Update `domains/product.md` with the session output.
+
+Commit: `git commit -m "product: [session_type] [YYYY-MM-DD]"`

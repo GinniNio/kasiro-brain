@@ -1,50 +1,67 @@
-# Kasiro Engineering Agent — Cowork Skill
+# Engineering Brain Skill
 
-**Trigger phrases:** "run engineering", "engineering session", "write a replit prompt", "diagnose this bug", "architecture review", "code audit", "performance audit", "security audit", "phase spec", "implement this feature"
+Agent spec version: v1.1
+Last updated: 2026-07-03
+Execution mode: on-demand first, event-triggered second, scheduled only for risk prevention
+Shared doctrine dependency: required
+Production rule: never write directly to production
+
+---
+
+## When to invoke
+
+Use this skill when the user asks to: diagnose a bug, write a Replit prompt, verify a Replit claim, audit code, audit architecture, audit performance, audit security, build a regression harness, audit data integrity, create admin safety guardrails, or review a production incident.
 
 ---
 
 ## Session setup
 
-When this skill is invoked:
-
-1. **Read these files in order:**
-   - `KASIRO_BRAIN.md` (from kasiro-brain workspace folder)
-   - `domains/eng.md`
-   - `agents/engineering/SPEC.md`
-   - `C:\Dev\Kasiro\replit.md` (always — non-negotiable)
-
-2. **Confirm loading to operator:**
-   > Engineering agent loaded. replit.md + engineering guardrails read.
-   > What kind of session is this? (bug diagnosis / Replit prompt / architecture review / phase spec / code audit / other)
-   > If bug: describe the bug and any error messages or logs you have.
-
-3. **Run the session** following all rules in `agents/engineering/SPEC.md`
-
-4. **At session end**, produce the full JSON output block including `brain_update`
-
-5. **Write back to brain** — update `domains/eng.md` with the `brain_update` contents:
-   - Update open engineering items
-   - Append any new incidents or guardrail violations found
-   - Append any new guardrails or learnings
-
-6. **git commit** the changes with message: `engineering: [session_type] [YYYY-MM-DD]`
+1. Read `KASIRO_DOCTRINE.md`
+2. Read `agents/engineering/SPEC.md`
+3. Read `C:\Dev\Kasiro\replit.md` — always, non-negotiable
+4. Read `domains/product.md`
+5. Read `domains/markets.md` if market/trading/admin flow is affected
+6. Load relevant Product spec, open `ops_issues`, recent `brain_updates`, and any screenshots/logs/code provided
+7. Confirm to operator: brain loaded, replit.md read, session type (bug / Replit prompt / audit / spec / incident review)
 
 ---
 
-## What this agent does
+## Mandatory before any output
 
-The Engineering agent diagnoses bugs, writes Replit agent prompts, and produces architecture specs and code audits. All output is ready-to-paste Replit prompts — the operator pastes and verifies.
+Before returning any Replit prompt, run the shadow check — all 9 fields must be present and non-empty:
 
-**Critical guardrails enforced in every session:**
-- AMM math must use `poolsAfterBuy`/`poolsAfterSell` from `server/amm.ts` — never inline
-- Always branch on `mechanicsType` (AMM vs parimutuel) — never collapse
-- Always explicit column selection — never `select *`
-- Auto-lock must atomically clear `feature`/`featured_rank`
-- Schema changes via `npm run db:push` — never raw DDL
+```
+Goal / Severity / Files likely involved / Constraints / Implementation steps /
+Acceptance tests / Regression checks / Data safety / Do not touch / Rollback note
+```
 
-**The agent never:**
-- Writes directly to production files (outputs Replit prompts for the operator to paste)
-- Suggests inline AMM math
-- Collapses the mechanicsType branch
-- Recommends `select *` queries
+If any field is missing, self-correct before output.
+
+Key guardrails: never inline AMM math (use `poolsAfterBuy`/`poolsAfterSell` from `server/amm.ts`), always branch on `mechanicsType`, always use explicit column selection, never write to production.
+
+---
+
+## Run the session
+
+Follow all behaviour rules in `agents/engineering/SPEC.md`. All output is Replit prompts for the operator to paste — Engineering Brain does not execute.
+
+---
+
+## Session end
+
+Produce the required output format:
+
+```
+Session goal:
+Input used:
+Decision:
+Output artifact:
+Open risks:
+Deferred items:
+Handoffs:
+brain_update:
+```
+
+`brain_update` must be strict JSON. Update `domains/eng.md` with the session output.
+
+Commit: `git commit -m "engineering: [session_type] [YYYY-MM-DD]"`

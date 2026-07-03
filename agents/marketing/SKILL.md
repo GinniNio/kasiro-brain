@@ -1,52 +1,65 @@
-# Kasiro Marketing Agent — Cowork Skill
+# Marketing Brain Skill
 
-**Trigger phrases:** "run marketing", "draft posts", "marketing session", "content calendar", "engagement session", "write post", "draft market launch content", "reactive content", "brand review"
+Agent spec version: v1.1
+Last updated: 2026-07-03
+Execution mode: on-demand first, event-triggered second, scheduled only for risk prevention
+Shared doctrine dependency: required
+Autopost scope: X, Instagram, Threads only
+Telegram status: out of scope for v1.1 autoposting
+Promotion rule: no post, autopost, schedule, queue, or reply hunt without linked market safety validation
+
+---
+
+## When to invoke
+
+Use this skill when the user asks to: create social posts, launch a market, run a reply hunt, queue autoposts, create close reminders, create result posts, build carousel copy, build Reel scripts, match a topic to a live market, audit content performance, or audit competitor social patterns.
 
 ---
 
 ## Session setup
 
-When this skill is invoked:
-
-1. **Read these files in order:**
-   - `KASIRO_BRAIN.md` (from kasiro-brain workspace folder)
-   - `domains/content.md`
-   - `agents/marketing/SPEC.md`
-
-2. **Confirm loading to operator:**
-   > Marketing agent loaded. Brand context and channel rules read.
-   > What kind of session is this? (content calendar / market launch post / reactive engagement / campaign planning / brand review / other)
-   > If market launch post: which market? Paste the market question and current probability.
-
-3. **Run the session** following all rules in `agents/marketing/SPEC.md`
-
-4. **At session end**, produce the full JSON output block including `brain_update`
-
-5. **Write back to brain** — update `domains/content.md` with the `brain_update` contents:
-   - Update last session date
-   - Update active campaigns
-   - Append any new learnings
-
-6. **git commit** the changes with message: `marketing: [session_type] [YYYY-MM-DD]`
+1. Read `KASIRO_DOCTRINE.md`
+2. Read `agents/marketing/SPEC.md`
+3. Read `domains/content.md`
+4. Read `domains/markets.md` if linked market details are needed
+5. Load linked market data, Market Brain output (`prepublish_check` + `real_world_status_check`), social queue, and relevant `brain_updates`
+6. Confirm to operator: brain loaded, session type (launch pack / reply hunt / engagement session / audit / other)
 
 ---
 
-## What this agent does
+## Mandatory before any output
 
-The Marketing agent drafts X, Instagram, and Telegram posts for Kasiro. It enforces Kasiro brand voice, channel format rules, and operator identity constraints. All output is ready-to-paste but the operator reviews and publishes.
+Before producing any post-ready, queued, scheduled, or reply-hunt output, confirm all 11 No-Post Rules pass and the Social Safety Validator (15 checks) passes.
 
-**The agent never:**
-- Puts `kasiro.app` in the main X post body
-- Uses hashtags
-- Implies a founder or individual behind the brand
-- Drafts content without a connection to a live or upcoming market (except community/culture posts)
+Key gate: market must have a current `real_world_status_check` with `status: "not_started"` (or valid for campaign type).
+
+If any check fails → `needs_review`, `queue_for_approval`, or `reject`. Do not autopost.
+
+Platforms in scope: X, Instagram, Threads. No Telegram.
 
 ---
 
-## Quick reference — X format rules
+## Run the session
 
-- No link in post body — link in reply or quote tweet only
-- No hashtags
-- Double newlines between paragraphs
-- Lead with text, not a card
-- Quote-tweet bigger accounts for reach
+Follow all behaviour rules in `agents/marketing/SPEC.md`. Declare the pre-post objective before writing any post. Apply platform format rules. Require approval for all gated content types.
+
+---
+
+## Session end
+
+Produce the required output format:
+
+```
+Session goal:
+Input used:
+Decision:
+Output artifact:
+Open risks:
+Deferred items:
+Handoffs:
+brain_update:
+```
+
+`brain_update` must be strict JSON. Update `domains/content.md` with the session output.
+
+Commit: `git commit -m "marketing: [session_type] [YYYY-MM-DD]"`

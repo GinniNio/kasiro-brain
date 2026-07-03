@@ -1,6 +1,8 @@
 # Kasiro Content & Marketing Intelligence
 **Domain owner:** Marketing agent | **Last updated:** 2026-07-03
 
+> **Content platform scope for v1.1:** Owned/autopost channels: X, Instagram, Threads. Reply Hunt channels: X, Threads, Instagram comments where available. Telegram: out of scope for v1.1 autoposting.
+
 ---
 
 ## Brand Voice
@@ -79,17 +81,26 @@ Kasiro speaks like a sharp, culturally fluent African — not a betting app, not
 
 ---
 
-### Telegram — Kasiro Markets (community channel ID: -1003896103462)
-**Bot:** @predicto_build_bot
+## Telegram
 
-> **Scope: community channel only.** Telegram is NOT part of the agent autopost pipeline. The Marketing Brain autopost pipeline covers X, Threads, and Instagram only. All Telegram posts are manual operator actions outside the agent system.
+Status: Out of scope for v1.1 autoposting.
 
-**Manual community usage only:**
-- Resolution notifications at operator discretion
-- Early market announcements when operator chooses
-- Direct community responses
+Telegram may be referenced only as a future distribution channel or manual community channel. It must not appear in autopost workflows, social safety validator output, campaign creation, reply hunting, or Marketing Brain launch-pack defaults.
 
-**Bot handle:** Still @predicto_build_bot — update handle when technically feasible.
+Current v1.1 supported social platforms:
+1. X
+2. Instagram
+3. Threads
+
+If Telegram is reintroduced later, it must receive its own:
+- Platform rules
+- Approval gates
+- Formatting rules
+- API credential requirements
+- Autopost safety checks
+- Rate limits
+
+Community channel: Kasiro Markets (ID: -1003896103462) | Bot: @predicto_build_bot (update handle when feasible)
 
 ---
 

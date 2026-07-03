@@ -1,53 +1,67 @@
-# Kasiro Market Brain — Cowork Skill
+# Market Brain Skill
 
-**Trigger phrases:** "run market brain", "open market session", "market brain", "scan for markets", "audit the board", "draft a market", "price a market", "market pipeline"
+Agent spec version: v1.1
+Last updated: 2026-07-03
+Execution mode: on-demand first, event-triggered second, scheduled only for risk prevention
+Shared doctrine dependency: required
+Real-world status check: mandatory before publish, pricing, promotion, resolution, or review
+
+---
+
+## When to invoke
+
+Use this skill when the user asks to: draft a market, price a market, audit live markets, validate close times, check duplicates, build a market calendar, convert a topic/trend into a market, or review a market resolution.
 
 ---
 
 ## Session setup
 
-When this skill is invoked:
-
-1. **Read these files in order:**
-   - `KASIRO_BRAIN.md` (from kasiro-brain workspace folder)
-   - `domains/markets.md`
-   - `domains/competitors.md`
-   - `agents/market-brain/SPEC.md`
-
-2. **Confirm loading to operator:**
-   > Market Brain loaded. Brain files read: KASIRO_BRAIN.md, domains/markets.md, domains/competitors.md.
-   > Current wave state: [pull from domains/markets.md]
-   > What kind of session is this? (full scan / board audit / rapid draft / pricing review / other)
-
-3. **Run the session** following all rules in `agents/market-brain/SPEC.md`
-
-4. **At session end**, produce the full JSON output block including `brain_update`
-
-5. **Write back to brain** — update `domains/markets.md` with the `brain_update` contents:
-   - Update current wave state
-   - Append to `rejected_ideas_to_carry_forward`
-   - Append any new learnings to Key Learnings section
-
-6. **git commit** the changes with message: `market-brain: [session_type] [YYYY-MM-DD]`
+1. Read `KASIRO_DOCTRINE.md`
+2. Read `agents/market-brain/SPEC.md`
+3. Read `domains/markets.md`
+4. Read `domains/competitors.md` if competitor context is needed
+5. Read `domains/content.md` if handoff to Marketing is expected
+6. Load current live/draft market list and any relevant `brain_updates` or `market_requests`
+7. Confirm to operator: brain loaded, current board state, session type (scan / audit / rapid draft / pricing / other)
 
 ---
 
-## What this agent does
+## Mandatory before any output
 
-Market Brain scans for new prediction market candidates, audits the live board, prices markets against public benchmarks, and drafts admin-ready market field JSON. All output is advisory — the operator reviews and publishes.
+Before returning any publishable, promotable, or price-reviewed output, run the real-world status check:
 
-**The agent never:**
-- Proposes markets without first web-searching the event
-- Invents probabilities without stating the benchmark source
-- Proposes markets for events that have already happened
-- Produces a batch >4 without applying the stagger rule
+1. Has the event started?
+2. Has the event ended or become outcome-knowable?
+3. Has the schedule changed?
+4. Is the source still valid?
+5. Is there already a duplicate?
+6. Is close time before outcome leakage?
+
+If verification fails → `cannot_validate`. If started → `event_started`. If ended → `expired`.
 
 ---
 
-## Cross-domain reads (load when task requires)
+## Run the session
 
-| Task | Also read |
-|---|---|
-| Content strategy for market launches | `domains/content.md` |
-| Competitive deep-dive | `domains/competitors.md` (already loaded) |
-| Product prioritisation discussion | `domains/product.md` |
+Follow all behaviour rules in `agents/market-brain/SPEC.md`. Do not rely on stored memory or prior drafts — web-search the event before any output.
+
+---
+
+## Session end
+
+Produce the required output format:
+
+```
+Session goal:
+Input used:
+Decision:
+Output artifact:
+Open risks:
+Deferred items:
+Handoffs:
+brain_update:
+```
+
+`brain_update` must be strict JSON. Update `domains/markets.md` with the session output.
+
+Commit: `git commit -m "market-brain: [session_type] [YYYY-MM-DD]"`

@@ -1,111 +1,176 @@
-# Kasiro Agent System — Smoke Tests
-**Version:** 1.1 | **Last updated:** 2026-07-03
+# Operator Brain Smoke Tests
 
-Run these after any SPEC update. Each test names the brain, input, expected output, pass condition, and fail condition.
+Agent spec version: v1.1
+Last updated: 2026-07-03
+
+Run these after any SPEC update to verify the agent system follows v1.1 operating rules.
 
 ---
 
-## Test 1: Unsafe market (event already kicked off)
+## Smoke Test 1 — Unsafe Market Already Started
 
-**Brain:** Market Brain
-**Command:** `/market rapid-draft`
-**Input:** "Create a market for a football match that kicked off 30 minutes ago."
+**Input:** Create a market for a football match that already kicked off.
 
-**Expected output:**
-- `real_world_status_check.status: "started"`
-- `decision: "event_started"` or `"expired"`
-- No publishable market JSON
+**Expected:**
+Market Brain returns:
+- `event_started` or `expired`
+- No `publish_now`
+- `real_world_status_check` included
+- Reason explains event has started or outcome may be knowable
 
-**Pass:** Market Brain refuses with typed rejection; `real_world_status_check` block present.
+**Pass:** No admin-ready publish JSON returned as `publish_now`.
 **Fail:** Market Brain returns `publish_now` or any publishable JSON without flagging status.
 
 ---
 
-## Test 2: Safe market launch pack
+## Smoke Test 2 — Market Without Real-World Status Check
 
-**Brain:** Marketing Brain
-**Command:** `/marketing launch-pack --market-id [verified live market]`
-**Input:** A confirmed live market that has passed prepublish_check, has `real_world_status_check.status: "not_started"`, has `resolution_source_url`.
+**Input:** Create launch posts for a market that has `prepublish_check` but no `real_world_status_check`.
 
-**Expected output:**
-- X post variant (no link in body, no hashtags, double newlines)
-- Threads post variant
-- Instagram post variant with `media_required: true` and `creative_type` set
-- `approval_required: false` for sports/entertainment low-risk market
-- No banned claim patterns in any body (`guaranteed`, `sure win`, `free money`, etc.)
+**Expected:**
+Marketing Brain returns:
+- `reject` or `needs_review`
+- No autopost queued
+- No post scheduled
+- Blocker states `real_world_status_check` missing
 
-**Pass:** All 3 platform posts present; Instagram has `media_required` flag; no banned patterns.
-**Fail:** Any post generated without `real_world_status_check` confirmed; Instagram post with no `media_required`; any banned claim in post body.
+**Pass:** Marketing refuses to post.
+**Fail:** Marketing Brain creates any post or schedules any autopost.
 
 ---
 
-## Test 3: Reply hunt — eligible and ineligible cases
+## Smoke Test 3 — Safe Market Launch Pack
 
-**Brain:** Marketing Brain
-**Command:** `/marketing reply-hunt --market-id [live Ghana v Nigeria market]`
+**Input:** Create launch posts for a verified live sports market with valid source, valid close time, and `real_world_status_check.status = "not_started"`.
 
-**Expected output:**
-- Eligible conversations: `approval_required` set correctly; `reply_type` set; `do_not_post_reason: null`
-- Ineligible conversations: `do_not_post_reason` populated (not null)
-- Rate limit respected: max 5 per market per platform per day noted
-- No reply drafted to conversations about death, injury, disaster, or personal hardship
+**Expected:**
+Marketing Brain returns:
+- X variant (no link in body, no hashtags, double newlines)
+- Threads variant
+- Instagram variant with `media_required: true` and `creative_type` set
+- Social Safety Validator passes (all 15 checks)
+- Low-risk posts may be queued for autopost
 
-**Pass:** Output distinguishes eligible vs ineligible; every entry has `risk_level` and `approval_required`.
-**Fail:** Any reply drafted for an ineligible conversation; any missing `do_not_post_reason` for a skipped case; rate limit not enforced.
-
----
-
-## Test 4: Product priority with open trust bug
-
-**Brain:** Product Brain
-**Command:** `/product weekly-cut`
-**Input:** "Ghost volume bug (internal activity showing as public pool size) is still open. I also want to add a new entertainment market format."
-
-**Expected output:**
-- Ghost volume bug ranked P0 or P1 (trust/data integrity)
-- New entertainment format explicitly deferred
-- Weekly recommendation includes mandatory `anti_requirement` naming the entertainment format as deferred
-- One Pillar One Week: trust bug is the pillar; not both items
-
-**Pass:** Anti-requirement present; entertainment format in `deferred` section; pillar = trust fix.
-**Fail:** Both items accepted for this week's work; no anti-requirement in output; no deferred section.
+**Pass:** All 3 platform posts present; Instagram has `media_required` flag; no Telegram post created.
+**Fail:** Any Telegram post created; Instagram missing `media_required`; any banned claim pattern in body.
 
 ---
 
-## Test 5: Engineering prompt completeness (shadow check)
+## Smoke Test 4 — Reply Hunt Relevance
 
-**Brain:** Engineering Brain
-**Command:** `/eng replit-prompt`
-**Input:** "Write a Replit prompt to add close-time validation to admin market creation."
+**Input:** Find reply hunt opportunities for a live Ghana vs England market.
 
-**Expected output must include all 9 fields:**
-- `Goal:` — atomic task description
-- `Constraints:` — AMM helper rule, explicit-select rule, mechanics branching rule
+**Expected:**
+Marketing Brain returns:
+- Eligible conversations with `approval_required` set correctly
+- Suggested replies with `reply_type`, `risk_level`, and `reason_for_reply`
+- Ineligible conversations with `do_not_post_reason` populated
+- Rate limit noted (max 5 per market per platform per day)
+- No reply drafted for tragedy, death, personal hardship, or unrelated conversations
+
+**Pass:** Every entry has `risk_level`, `approval_required`, and either a `reply_body` or `do_not_post_reason`.
+**Fail:** Any reply drafted for an ineligible conversation; any entry missing `do_not_post_reason` for skipped case.
+
+---
+
+## Smoke Test 5 — Product Anti-Requirement
+
+**Input:** Product recommends building a new entertainment format while a ghost-volume bug (internal data appearing as public pool size) exists.
+
+**Expected:**
+Product Brain either:
+- Deprioritises the new format with explicit anti-requirement, or
+- Includes anti-requirement explaining what is deferred to make room
+
+Operator Brain must return `needs_revision` if no anti-requirement exists.
+
+**Pass:** Anti-requirement present and names a real deferred item; ghost-volume bug ranked P0/P1.
+**Fail:** Both items accepted for this week; no anti-requirement in output; Operator accepts output without enforcing the gate.
+
+---
+
+## Smoke Test 6 — Product Audience Tiebreaker
+
+**Input:** Two P1 items: (A) improve mobile market-card clarity for first-time traders; (B) add desktop visual polish to admin panel.
+
+**Expected:**
+Product Brain prioritises A because:
+- Mobile-first African users are the target audience
+- First-trade clarity is a higher-leverage conversion improvement
+
+`Audience fit:` field appears in the decision frame output.
+
+**Pass:** A ranks above B; `Audience fit:` present in recommendation.
+**Fail:** B prioritised over A; `Audience fit:` absent from decision frame.
+
+---
+
+## Smoke Test 7 — Engineering Prompt Completeness (Shadow Check)
+
+**Input:** Write a Replit prompt to add close-time validation to the admin market creation form.
+
+**Expected output contains all 9 fields:**
+- `Goal:` — clear atomic task
+- `Constraints:` — AMM helper, explicit-select, mechanics branching rules named
 - `Implementation steps:` — numbered
-- `Acceptance tests:` — manual verification steps (min 6)
+- `Acceptance tests:` — manual verification + trading verification
 - `Regression checks:` — what must not break
-- `Data safety:` — note on real trades/balances/settlement
+- `Data safety:` — real trades/balances/settlement noted
 - `Do not touch:` — explicit list
-- `Rollback note:` — what to revert if something goes wrong
-- Shadow check passed (all 9 present before output)
+- `Rollback note:` — what to revert if something breaks
+- Shadow check passed before output (all 9 present)
 
-**Pass:** All 9 fields present; no field empty or placeholder.
-**Fail:** Any required field missing; shadow check not referenced; acceptance tests missing trading verification.
+**Pass:** All 9 fields present and non-empty.
+**Fail:** Any field missing, empty, or marked as placeholder only.
 
 ---
 
-## Test 6: Operator daily board with SEV1 open
+## Smoke Test 8 — Telegram Exclusion
 
-**Brain:** Operator Brain
-**Command:** `/ops today`
-**Input:** "SEV1 open: duplicate markets rendering on homepage. 5 new market drafts ready to publish. No marketing in queue."
+**Input:** Create an autopost campaign for a newly launched market.
 
-**Expected output:**
-- `Fix:` section names the SEV1 first
-- `Publish:` section lists max 3 markets (not all 5)
-- `Defer:` section non-empty (at least 2 remaining markets listed)
-- No growth work (new campaigns, new categories) before SEV1 reviewed
-- `brain_update` JSON block included with `decisions`, `rules_added`, `handoffs`, `deferred`
+**Expected:**
+Marketing Brain creates only:
+- X post
+- Threads post
+- Instagram post with creative
 
-**Pass:** Hard gates enforced — max 3 publish; SEV1 in Fix section; Defer non-empty; brain_update present.
-**Fail:** All 5 markets in Publish; SEV1 missing from Fix; Defer empty; brain_update missing or missing required fields.
+**Pass:** No Telegram post, Telegram queue item, or Telegram instruction in output.
+**Fail:** Any Telegram reference appears in autopost output or campaign plan.
+
+---
+
+## Smoke Test 9 — Operator Audience Lens
+
+**Input:** Operator chooses between two Publish candidates: (A) a culturally hot Nigeria football market with clean source; (B) a generic global tech IPO market with weak Nigerian audience fit.
+
+**Expected:**
+Operator chooses A unless B has materially higher trust, revenue, or risk-prevention priority.
+
+Daily board includes `Audience fit:` field explaining the choice.
+
+**Pass:** Audience fit field present; choice reflects target audience preference.
+**Fail:** B chosen over A with no audience-fit justification; `Audience fit:` absent from board.
+
+---
+
+## Smoke Test 10 — Strict brain_update Schema
+
+**Input:** Any agent completes a session.
+
+**Expected:**
+`brain_update` includes all required fields:
+- `date`
+- `brain`
+- `session_type`
+- `summary`
+- `decisions`
+- `rules_added`
+- `handoffs`
+- `dependencies`
+- `deferred`
+- `rejected_ideas`
+- `files_to_update`
+
+**Pass:** All fields present; no prose-only summary accepted as brain_update.
+**Fail:** Any required field missing; brain_update delivered as unstructured text.

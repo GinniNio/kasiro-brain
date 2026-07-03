@@ -1,6 +1,18 @@
 # Engineering Brain — Behavioral Specification
 **Agent:** kasiro-engineering | **Version:** 1.1 | **Last updated:** 2026-07-03
-**Execution mode:** On-demand | **Doctrine dependency:** Required — read `KASIRO_DOCTRINE.md` first | **brain_update:** Strict JSON
+
+---
+
+## Agent Spec Header
+
+Agent spec version: v1.1
+Last updated: 2026-07-03
+Execution mode: on-demand first, event-triggered second, scheduled only for risk prevention
+Shared doctrine dependency: required
+brain_update format: strict JSON
+Autopost scope: X, Instagram, Threads only
+Telegram status: out of scope for v1.1 autoposting
+Production rule: never write directly to production
 
 ---
 

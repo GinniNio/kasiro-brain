@@ -1,80 +1,111 @@
-# Kasiro Agent System — File Index
-**System version:** 1.1 | **Last updated:** 2026-07-03
+# Predicto / Kasiro Agent System
+
+Agent spec version: v1.1
+Last updated: 2026-07-03
+Execution mode: on-demand first, event-triggered second, scheduled only for risk prevention
 
 ---
 
-## Load order (every session)
+## Files
 
-1. `../KASIRO_DOCTRINE.md` — 15 shared rules, overrides everything
-2. `../KASIRO_BRAIN.md` — master index, agent directory, domain files, shared state
-3. Relevant domain file(s) for the session
-4. Agent `SPEC.md` for the session
+SPEC.md defines behaviour. SKILL.md defines how to start, load context, run the command, and return output.
 
----
-
-## Agent files
-
-| Agent | SPEC | SKILL (Cowork) | PROMPT (Chat paste) |
+| Agent | SPEC (behaviour) | SKILL (invocation) | Other |
 |---|---|---|---|
-| Operator Brain | `operator-brain/SPEC.md` | `operator-brain/SKILL.md` | `operator-brain/PROMPT.md` |
-| Market Brain | `market-brain/SPEC.md` | `market-brain/SKILL.md` | `market-brain/PROMPT.md` |
-| Marketing Brain | `marketing/SPEC.md` | `marketing/SKILL.md` | `marketing/PROMPT.md` |
-| Product Brain | `product/SPEC.md` | `product/SKILL.md` | `product/PROMPT.md` |
-| Engineering Brain | `engineering/SPEC.md` | `engineering/SKILL.md` | `engineering/PROMPT.md` |
+| Operator Brain | `agents/operator-brain/SPEC.md` | `agents/operator-brain/SKILL.md` | `agents/operator-brain/PROMPT.md`, `agents/operator-brain/SMOKE_TESTS.md` |
+| Market Brain | `agents/market-brain/SPEC.md` | `agents/market-brain/SKILL.md` | — |
+| Marketing Brain | `agents/marketing/SPEC.md` | `agents/marketing/SKILL.md` | — |
+| Product Brain | `agents/product/SPEC.md` | `agents/product/SKILL.md` | — |
+| Engineering Brain | `agents/engineering/SPEC.md` | `agents/engineering/SKILL.md` | — |
 
 ---
 
-## Domain files
+## Supported social platforms in v1.1
 
-| File | Owner | Updated when |
-|---|---|---|
-| `../domains/markets.md` | Market Brain | Every Market Brain session |
-| `../domains/content.md` | Marketing Brain | Every Marketing Brain session |
-| `../domains/competitors.md` | Market Brain + Marketing Brain | Competitor audit sessions |
-| `../domains/product.md` | Product Brain | Every Product Brain session |
-| `../domains/eng.md` | Engineering Brain | Every Engineering Brain session |
+Owned/autopost:
+1. X
+2. Instagram
+3. Threads
+
+Reply Hunt:
+1. X
+2. Threads
+3. Instagram comments where available
+
+Out of scope:
+1. Telegram autoposting
 
 ---
 
-## Connected agent loop
+## Run order
+
+1. Operator loads doctrine and current state.
+2. Operator identifies the relevant command.
+3. Operator routes to the relevant brain.
+4. Brain executes command.
+5. Brain returns output artifact, handoffs, and strict JSON brain_update.
+6. Operator accepts, rejects, or requests revision.
+7. Approved brain_update is written back to domain state.
+
+---
+
+## Core principles
+
+1. Agents run on demand by default.
+2. Event triggers are allowed only when they prevent missed closes, missed resolutions, failed posts, or approved workflow handoffs.
+3. Market Brain must verify real-world status every time.
+4. Marketing must not promote any market without valid prepublish_check and real_world_status_check.
+5. Autoposting covers X, Instagram, and Threads only.
+6. Reply Hunt must be relevant, useful, non-spammy, and linked to a live safe market.
+7. Product recommendations require anti-requirements.
+8. Engineering outputs require acceptance tests, regression checks, data safety, and rollback note.
+9. Operator enforces all cross-brain gates.
+10. Target audience fit is a decision tiebreaker across Operator, Market, Marketing, and Product.
+
+---
+
+## Kasiro target audience
+
+Young, mobile-first African users, especially Nigerians, who follow football, Afrobeats, creators, internet culture, elections, FX, and public debates.
+
+Kasiro should feel connected to the arguments already happening on the timeline while staying clear, source-based, and trustworthy.
+
+---
+
+## Brain outputs
+
+Every brain output must include:
 
 ```
-Market opportunity
-→ Market Brain validates/drafts
-→ Marketing Brain distributes
-→ Product Brain prioritises fixes/features
-→ Engineering Brain creates Replit prompts
-→ Operator Brain decides what ships/promotes/fixes today
-→ brain_update writes back to domain files
+Session goal:
+Input used:
+Decision:
+Output artifact:
+Open risks:
+Deferred items:
+Handoffs:
+brain_update:
 ```
 
 ---
 
-## Session run order
+## Valid decision statuses
 
-1. Operator loads `KASIRO_DOCTRINE.md` + `KASIRO_BRAIN.md`
-2. Operator selects the relevant brain for today's task
-3. Brain reads its domain file(s)
-4. Brain executes the declared command
-5. Brain returns: output artifact + handoffs + `brain_update` JSON
-6. Operator decides whether to execute
-7. Operator (or Cowork SKILL) writes `brain_update` back to the relevant domain file
-8. Handoffs route to the next brain
-
----
-
-## Execution mode
-
-All agents run on-demand only. Scheduled checks allowed only for:
-- Market close reminders for already-live markets
-- Resolution checks for markets past event end
-- Social post queue retries
-- Failed autopost checks
-- High-priority ops issue reminders
-
----
-
-## Smoke tests
-
-See `operator-brain/SMOKE_TESTS.md` for repeatable pass/fail tests across all 5 brains.
-Run these after any agent SPEC update to verify cross-brain behaviour holds.
+```
+publish_now
+post_now
+queue_for_approval
+ship_now
+spec_for_engineering
+needs_review
+needs_revision
+watchlist
+defer
+kill
+reject
+cannot_validate
+event_started
+expired
+duplicate
+cannot_price
+```
