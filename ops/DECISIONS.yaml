@@ -1,0 +1,95 @@
+version: 1.0
+last_updated: 2026-07-05
+owner: Okung Ebiefie
+
+status_values:
+  - proposed
+  - locked
+  - superseded
+  - rejected
+  - pending_evidence
+
+schema:
+  required_fields:
+    - id
+    - project
+    - status
+    - decision
+    - applies_to
+    - source
+    - updated_at
+
+entries:
+  - id: KASIRO-SOURCE-001
+    project: kasiro
+    status: locked
+    decision: GitHub repository GinniNio/kasiro-brain is the source of truth for Kasiro doctrine and agent specifications.
+    applies_to:
+      - agents
+      - doctrine
+      - domain_state
+    prohibited_interpretations:
+      - Uploaded copies override the repository.
+      - OneDrive Predicto folders are active workspaces.
+    source:
+      file: KASIRO_BRAIN.md
+      section: What Is Dead / Archived
+    updated_at: 2026-07-05
+
+  - id: KASIRO-VERIFY-001
+    project: kasiro
+    status: locked
+    decision: A code change is not complete until the applicable runtime or production acceptance checks pass.
+    applies_to:
+      - engineering
+      - product
+      - release
+    source:
+      file: ops/PROOF_OF_COMPLETION.md
+    updated_at: 2026-07-05
+
+  - id: DROPZ-PRODUCT-001
+    project: gochat_dropz
+    status: locked
+    decision: The purchasable product is a usable redeemable digital-goods or coins pack; campaign participation is an additional benefit.
+    applies_to:
+      - deck
+      - model
+      - ux
+      - legal
+      - commercial_copy
+    prohibited_language:
+      - standalone entry sale
+      - ticket sale
+      - raffle engine
+      - personal odds engine
+      - winning chance
+    source:
+      type: operator_decision
+      date: 2026-07-04
+    updated_at: 2026-07-05
+
+  - id: PCBF-CASH-001
+    project: pcbf
+    status: locked
+    decision: Bet9ja is the execution book, but CASH eligibility requires an external benchmark and full data validation.
+    applies_to:
+      - selection
+      - staking
+      - reporting
+    source:
+      type: operator_framework
+      version: PCBF v13
+    updated_at: 2026-07-05
+
+  - id: PCBF-CONSTRUCTION-001
+    project: pcbf
+    status: locked
+    decision: Cash construction quarantine is singles only; four or more legs are blocked.
+    applies_to:
+      - staking
+      - slips
+    source:
+      type: operator_framework
+      version: PCBF v13
+    updated_at: 2026-07-05
