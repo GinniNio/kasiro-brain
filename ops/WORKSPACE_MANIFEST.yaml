@@ -1,0 +1,78 @@
+version: 1.0
+last_updated: 2026-07-05
+owner: Okung Ebiefie
+
+source_precedence:
+  - live_production
+  - primary_repository_default_branch
+  - project_brain
+  - approved_canonical_artifact
+  - file_library
+  - local_mirror
+  - chat_memory
+
+rules:
+  - Never treat a local path, uploaded copy, generated export, or chat recollection as authoritative when a higher-precedence source is available.
+  - Production observations describe deployed state; repository sources describe intended implementation. Record conflicts explicitly.
+  - Every implementation task must declare its target project, authoritative repository, branch, and write-back destination.
+  - Every artifact task must identify the canonical source file and the assumptions or decision ledger it consumes.
+  - Unknown or inaccessible sources must be marked UNVERIFIABLE, never inferred.
+
+projects:
+  kasiro:
+    status: active
+    doctrine:
+      primary: github:GinniNio/kasiro-brain
+      entrypoint: KASIRO_BRAIN.md
+    application:
+      primary: github:GinniNio/Predicto
+      local_primary: C:\Dev\Kasiro
+    production:
+      url: https://kasiro.app
+    feeds:
+      primary: github:GinniNio/kasiro-RSS
+    deprecated:
+      - C:\Users\hp\OneDrive\Documents\Claude\Projects\Predicto
+      - github:GinniNio/Prolego1
+      - github:GinniNio/Prolego2
+    required_write_back:
+      doctrine_change: github:GinniNio/kasiro-brain
+      application_change: github:GinniNio/Predicto
+
+  gbegeball:
+    status: active
+    application:
+      primary: github:GinniNio/GbegeBall
+    production:
+      url: https://prolego.win/wc
+    required_write_back:
+      application_change: github:GinniNio/GbegeBall
+
+  gochat_dropz:
+    status: active_concept
+    doctrine:
+      primary: project_decision_ledger
+    artifacts:
+      canonical_deck: unset
+      canonical_model: unset
+      review_export: unset
+    required_write_back:
+      decision_change: ops/DECISIONS.yaml
+      assumption_change: ops/ASSUMPTIONS.yaml
+
+  pcbf:
+    status: active_framework
+    doctrine:
+      primary: unset
+    execution_book: Bet9ja
+    required_write_back:
+      framework_change: unset
+
+preflight_required_fields:
+  - project
+  - task_type
+  - authoritative_source
+  - branch_or_version
+  - production_target
+  - write_back_destination
+  - verification_level
