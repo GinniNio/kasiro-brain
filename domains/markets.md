@@ -164,66 +164,11 @@ For batches >4 markets: split into waves of 3–4 every 3–5 days across mixed 
 
 ---
 
-## Current Wave State
-*(Update after each Market Brain session)*
+## Live State
 
-**Current wave:** WC R16 wave live. R16 results so far: Morocco 3-0 Canada (Jul 4), France 1-0 Paraguay (Jul 4). Morocco vs France QF confirmed Jul 9 21:00 WAT. Remaining R16: Brazil/Norway + Mexico/England (Jul 5), Spain/Portugal + USMNT/Belgium (Jul 6), Argentina/Egypt + Colombia/Switzerland (Jul 7). WAFCON anchors start Jul 28 (Nigeria vs Malawi, Rabat).
-**Last Market Brain session:** 2026-07-09 (rapid-draft + strategic review)
-**Markets live:** 24 (pre-settlement of Jul 4 closers)
-**Categories currently over-represented:** sports_football (~95%)
-**Categories currently under-represented:** macroeconomy, entertainment, fx_crypto, african_internet, politics, future_africa (new category, see below)
-**Settlement due:** Jul 4 match markets (Morocco/Canada → Morocco; France/Paraguay → France) — settle proactively per 2026-07-03 learning.
+Current wave count, category balance, the verified-ready queue, and rejected ideas are **not** kept in this file anymore. Doctrine (formats, schema, banned types) is stable and safe to trust across sessions; wave state is not — it goes stale within days and was causing real incidents (two sessions independently owning "the current queue" and diverging, per the 2026-07-11 merge conflict).
 
-**Verified-and-ready queue (2026-07-09 session, all facts re-checked live, none invented):**
-- 2027 Presidential Election Winner parimutuel (Tinubu/Obi/Atiku/Other) — highest-priority gap fill
-- Osimhen transfer destination parimutuel (Real Madrid/Galatasaray/PSG/Chelsea/Other) — Mourinho actively pursuing, €150M figures reported
-- Africa startup capital race Q3 (Kenya/Nigeria/SA/Egypt) — Kenya genuinely overtook Nigeria in 2025 ($984M), real rivalry
-- Which Big Tech responds first to Nigeria's FCCPC news-content probe (Google/Meta/X/AI co./none) — Tinubu ordered investigation 6-7 Jul 2026, FCCPC already fined Meta $220M in 2025
-- Nigeria's Digital Infrastructure Race (140M NIN / 190M mobile / 57% broadband / Kuiper commercial launch) — NIN at 136.0M (up from 123.9M Oct 2025), mobile 188.0M, broadband 55.67%, Kuiper licensed Feb 2026 but not yet retail-live
-- Flutterwave IPO filing before 31 Dec 2026 — denied but Mono acquisition + $75M govt approval signal real tension
-- Davido "ORIADÉ" #1 debut on TurnTable Charts Nigeria — album confirmed 31 Jul, lead single out
-- Attention Wars: Google Trends race, Tyla/BBNaija/WAFCON/World Cup, 24-31 Jul — Tyla album confirmed 24 Jul, BBN premiere confirmed 26 Jul
-- NGX weekly best/worst performer (rotating parimutuel pair) — replaces the stale fixed-threshold ASI market design flaw
-- Nigeria vs Zambia WAFCON event-page bundle (win/clean sheet/score first/named scorer under one event) — Group C confirmed (Malawi, Zambia, Egypt)
-
-**Watchlist (mechanic ready, needs cast/nominee reveal before outcomes can be fixed):**
-- Which BBNaija S11 housemate gains the most Instagram followers in 72 hours — needs official cast reveal
-- Headies 18th edition award-category parimutuel — ceremony confirmed Oct 25 Toronto, nominees not yet published
-
----
-
-## Rejected Ideas — Carry Forward
-*(Paste from last Market Brain session output)*
-
-```json
-[
-  {
-    "idea": "Egypt to advance vs Argentina (binary AMM)",
-    "reason_rejected": "Implied prior ~16% — below 20% floor. Reframed as 3-outcome parimutuel match market instead (proposed 2026-07-05)",
-    "revisit_when": "n/a — superseded by parimutuel framing"
-  },
-  {
-    "idea": "Who wins WC 2026? parimutuel (8 outcomes)",
-    "reason_rejected": "QF field incomplete until Jul 7 R16 concludes — cannot fix outcome list yet",
-    "revisit_when": "2026-07-08 morning, after final R16 matches"
-  },
-  {
-    "idea": "Headies 2026 award category parimutuel bundle (ceremony Oct 25, Toronto — verified 2026-07-05)",
-    "reason_rejected": "Nominee lists per category not yet verified — cannot fix parimutuel outcomes",
-    "revisit_when": "When 18th Headies nominees are published (check theheadies.com)"
-  },
-  {
-    "idea": "CBN MPC July decision market (meeting verified: Jul 20-21, 2026, MPC #306)",
-    "reason_rejected": "Current MPR level and analyst consensus not verified this session — cannot price",
-    "revisit_when": "Next afternoon-draft — verify MPR + consensus, then draft"
-  },
-  {
-    "idea": "USD/NGN NAFEM rate band market (rate ~N1,370 as of Jul 3 — verified 2026-07-05)",
-    "reason_rejected": "Band construction needs Kalshi-style reference-rate methodology pass, not done in morning scan",
-    "revisit_when": "Next afternoon-draft — closes fx_crypto category gap"
-  }
-]
-```
+Live state now lives in **[`wave-state.md`](./wave-state.md)**, which carries an explicit staleness banner and is meant to be treated as a snapshot, not a source of truth. For actual current market counts and category balance, query `/api/markets` directly — it's more authoritative than any markdown file.
 
 ---
 
