@@ -32,6 +32,15 @@
 - Revenue: 8% rake (`feeBps: 800`) — aggressively low vs 15–25% industry norm
 - Best for: elections, tournaments, award categories, multi-team events
 
+### Five Question-Structure Formats (added 2026-07-09)
+The innovation lever is question *structure*, not obscure subject matter. Support these five named formats so familiar stories still produce differentiated markets:
+- **Race:** Which of several defined events happens first? (e.g. NIN hits 140M vs mobile hits 190M vs broadband hits 57%)
+- **Basket:** How many of N listed events happen within a window? (e.g. BBNaija first-week chaos index — 5 defined events, pool by count)
+- **Attention battle:** Which topic/person gains the most measurable attention? (e.g. Google Trends race between Tyla/BBNaija/WAFCON/World Cup; Wikipedia pageview comparisons)
+- **Reaction market:** What happens immediately after a known decision/release? (e.g. which NGX sector moves most after CBN MPC decision)
+- **Index market:** Combine several observable sub-events into one score.
+Use these to convert routine stories (earnings season, chart releases, election cycles) into non-template markets. Always require: one definitive source, a real deadline, mutually exclusive pool options, no invented candidates, a reason the market matters now.
+
 ---
 
 ## Market Schema (Drizzle/Postgres)
@@ -158,11 +167,28 @@ For batches >4 markets: split into waves of 3–4 every 3–5 days across mixed 
 ## Current Wave State
 *(Update after each Market Brain session)*
 
-**Current wave:** WC 2026 R32 wave — 24 markets live. All match markets close Jul 3–5. WAFCON anchors (Group C, Malawi, overall winner) run through Aug 16.
-**Last Market Brain session:** 2026-07-03
-**Markets live:** 24
+**Current wave:** WC R16 wave live. R16 results so far: Morocco 3-0 Canada (Jul 4), France 1-0 Paraguay (Jul 4). Morocco vs France QF confirmed Jul 9 21:00 WAT. Remaining R16: Brazil/Norway + Mexico/England (Jul 5), Spain/Portugal + USMNT/Belgium (Jul 6), Argentina/Egypt + Colombia/Switzerland (Jul 7). WAFCON anchors start Jul 28 (Nigeria vs Malawi, Rabat).
+**Last Market Brain session:** 2026-07-09 (rapid-draft + strategic review)
+**Markets live:** 24 (pre-settlement of Jul 4 closers)
 **Categories currently over-represented:** sports_football (~95%)
-**Categories currently under-represented:** macroeconomy, entertainment, fx_crypto, african_internet
+**Categories currently under-represented:** macroeconomy, entertainment, fx_crypto, african_internet, politics, future_africa (new category, see below)
+**Settlement due:** Jul 4 match markets (Morocco/Canada → Morocco; France/Paraguay → France) — settle proactively per 2026-07-03 learning.
+
+**Verified-and-ready queue (2026-07-09 session, all facts re-checked live, none invented):**
+- 2027 Presidential Election Winner parimutuel (Tinubu/Obi/Atiku/Other) — highest-priority gap fill
+- Osimhen transfer destination parimutuel (Real Madrid/Galatasaray/PSG/Chelsea/Other) — Mourinho actively pursuing, €150M figures reported
+- Africa startup capital race Q3 (Kenya/Nigeria/SA/Egypt) — Kenya genuinely overtook Nigeria in 2025 ($984M), real rivalry
+- Which Big Tech responds first to Nigeria's FCCPC news-content probe (Google/Meta/X/AI co./none) — Tinubu ordered investigation 6-7 Jul 2026, FCCPC already fined Meta $220M in 2025
+- Nigeria's Digital Infrastructure Race (140M NIN / 190M mobile / 57% broadband / Kuiper commercial launch) — NIN at 136.0M (up from 123.9M Oct 2025), mobile 188.0M, broadband 55.67%, Kuiper licensed Feb 2026 but not yet retail-live
+- Flutterwave IPO filing before 31 Dec 2026 — denied but Mono acquisition + $75M govt approval signal real tension
+- Davido "ORIADÉ" #1 debut on TurnTable Charts Nigeria — album confirmed 31 Jul, lead single out
+- Attention Wars: Google Trends race, Tyla/BBNaija/WAFCON/World Cup, 24-31 Jul — Tyla album confirmed 24 Jul, BBN premiere confirmed 26 Jul
+- NGX weekly best/worst performer (rotating parimutuel pair) — replaces the stale fixed-threshold ASI market design flaw
+- Nigeria vs Zambia WAFCON event-page bundle (win/clean sheet/score first/named scorer under one event) — Group C confirmed (Malawi, Zambia, Egypt)
+
+**Watchlist (mechanic ready, needs cast/nominee reveal before outcomes can be fixed):**
+- Which BBNaija S11 housemate gains the most Instagram followers in 72 hours — needs official cast reveal
+- Headies 18th edition award-category parimutuel — ceremony confirmed Oct 25 Toronto, nominees not yet published
 
 ---
 
@@ -172,24 +198,29 @@ For batches >4 markets: split into waves of 3–4 every 3–5 days across mixed 
 ```json
 [
   {
-    "idea": "WC R16 path markets for surviving African teams (Morocco + winner of Egypt/Ghana/Cabo Verde)",
-    "reason_rejected": "R32 not yet resolved — cannot propose R16 markets until we know which African teams advance",
-    "revisit_when": "2026-07-04 morning, after R32 results are in"
+    "idea": "Egypt to advance vs Argentina (binary AMM)",
+    "reason_rejected": "Implied prior ~16% — below 20% floor. Reframed as 3-outcome parimutuel match market instead (proposed 2026-07-05)",
+    "revisit_when": "n/a — superseded by parimutuel framing"
   },
   {
-    "idea": "Headies 2026 award category parimutuel bundle",
-    "reason_rejected": "Announcement date unconfirmed — need to verify before pricing",
-    "revisit_when": "Next full pipeline scan"
+    "idea": "Who wins WC 2026? parimutuel (8 outcomes)",
+    "reason_rejected": "QF field incomplete until Jul 7 R16 concludes — cannot fix outcome list yet",
+    "revisit_when": "2026-07-08 morning, after final R16 matches"
   },
   {
-    "idea": "CBN MPC meeting decision market (MPR rate band)",
-    "reason_rejected": "Next MPC meeting date not verified in this session",
-    "revisit_when": "Next full pipeline scan — verify next CBN MPC date"
+    "idea": "Headies 2026 award category parimutuel bundle (ceremony Oct 25, Toronto — verified 2026-07-05)",
+    "reason_rejected": "Nominee lists per category not yet verified — cannot fix parimutuel outcomes",
+    "revisit_when": "When 18th Headies nominees are published (check theheadies.com)"
   },
   {
-    "idea": "USD/NGN NAFEM rate band market",
-    "reason_rejected": "Not scoped in this session",
-    "revisit_when": "Next full pipeline scan"
+    "idea": "CBN MPC July decision market (meeting verified: Jul 20-21, 2026, MPC #306)",
+    "reason_rejected": "Current MPR level and analyst consensus not verified this session — cannot price",
+    "revisit_when": "Next afternoon-draft — verify MPR + consensus, then draft"
+  },
+  {
+    "idea": "USD/NGN NAFEM rate band market (rate ~N1,370 as of Jul 3 — verified 2026-07-05)",
+    "reason_rejected": "Band construction needs Kalshi-style reference-rate methodology pass, not done in morning scan",
+    "revisit_when": "Next afternoon-draft — closes fx_crypto category gap"
   }
 ]
 ```
@@ -205,3 +236,7 @@ For batches >4 markets: split into waves of 3–4 every 3–5 days across mixed 
 - Never assert round names, scores, or match status from memory — always verify via live web search. The Morocco/France "Round of 16" flag in the 2026-07-03 audit was entirely wrong; a search showed both teams had already played R32 and their July 4 match was correctly R16. One search would have prevented a false flag. (2026-07-03)
 - Any-team-to-QF style meta-markets can resolve early if a qualifying match precedes the close time — settle proactively once outcome is known, don't wait for close time (2026-07-03)
 - Pool-forming state on parimutuel markets suppresses trader entry — consider minimal operator seed to show initial price signal (2026-07-03)
+- Competitor-board scans (Jupiter, Bayse) are most useful for stealing *question structure* and *market architecture* (event-page bundling, race/basket/attention-battle formats, deadline ladders), not literal topics — most of Jupiter's volume is Western political clickbait with zero African relevance and doesn't transfer (2026-07-09)
+- Bayse's board proves personality-driven politics and activity-count formats work with real Nigerian users, but Bayse also runs banned-type markets (individual tweet-count = creator-influenced; active-criminal-proceedings market on Sowore/DSS) — copy the mechanic, never the object, and always re-run banned-type checks before adapting a competitor pattern (2026-07-09)
+- A prior AI-generated market-ideas document is not a source — several of its cited "facts" (Tyla album date, NIMC enrolment figures, Kenya/Nigeria funding rivalry, FCCPC investigation) turned out to be accurate on re-verification, but they were re-checked live rather than trusted, per doctrine. Never draft off a document's claims without independently re-searching each fact (2026-07-09)
+- Fixed-threshold macro markets (e.g. "NGX ASI above X on date") go stale fast when the index has strong momentum and can end up mispriced against reality within days; prefer rotating weekly-winner/loser formats for recurring macro categories (2026-07-09)
