@@ -1,5 +1,5 @@
 # KASIRO BRAIN
-**Version:** 1.1 | **Last updated:** 2026-07-03
+**Version:** 1.2 | **Last updated:** 2026-07-09
 
 ---
 
@@ -9,7 +9,9 @@ Kasiro (kasiro.app) is Africa's prediction trading marketplace. Users deposit US
 
 **Positioning:** Not a betting app. Not DeFi. Not US-first. A prediction trading platform built natively for African markets — the only one running a hybrid AMM + parimutuel engine at this scale on the continent.
 
-**Structural differentiator:** Parimutuel multi-outcome markets. No African competitor offers this properly. AMM binary markets for single-event questions; parimutuel for elections, tournaments, award categories.
+**Structural differentiator:** Parimutuel multi-outcome markets. No African competitor offers this properly. AMM binary markets for single-event questions; parimutuel for elections, tournaments, award categories, races and baskets where outcomes are mutually exclusive.
+
+**Editorial differentiator:** Kasiro converts African attention, money, technology, public life and culture into verifiable markets. It should be known for distinctive race, basket, attention, reaction and index formats, not as a smaller sportsbook or a copy of a global exchange.
 
 **What Kasiro is not:** A sportsbook, a wallet, a crypto exchange, a social media tool, or a micro-insurance product. Never position it as any of these.
 
@@ -68,6 +70,7 @@ Market opportunity
 | File | Owned by | What it holds |
 |---|---|---|
 | `domains/markets.md` | Market Brain | Pipeline doctrine, board state, close-time rules, rejected ideas |
+| `domains/market-strategy.md` | Market Brain | Differentiated editorial lenses, signature formats, scoring, validation and portfolio strategy |
 | `domains/content.md` | Marketing Brain | Brand voice, channel rules, autopost rules, reply hunting state |
 | `domains/competitors.md` | Market Brain + Marketing Brain | Competitor snapshots, pricing benchmarks, category gaps |
 | `domains/product.md` | Product Brain | Open items, decisions, roadmap priorities, decision memos |
@@ -95,9 +98,10 @@ Run `/eng phase-spec --spec "shared state tables"` to generate the Replit implem
 ## Current State Snapshot
 *(Update this section after every significant session)*
 
-**Last updated:** 2026-07-03
-**Active focus:** Building second brain + agent system
+**Last updated:** 2026-07-09
+**Active focus:** Differentiate Kasiro through African attention, race, basket, reaction, index and Future Africa market franchises
 **Current market wave:** Check `domains/markets.md`
+**Market strategy:** Check `domains/market-strategy.md`
 **Open product items:** Check `domains/product.md`
 **Last content run:** Check `domains/content.md`
 
