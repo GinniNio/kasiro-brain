@@ -10,12 +10,24 @@ If this file is more than ~7 days old relative to today's session, treat everyth
 
 ## Last Known Wave State
 
-**Session date:** 2026-07-09
-**Wave:** WC R16 in progress; WAFCON anchors start ~Jul 28.
-**Markets live (as of session):** 24
-**Category balance (as of session):** sports_football heavily over-represented (~95%); macroeconomy, entertainment, fx_crypto, african_internet, politics under-represented.
+**Session date:** 2026-07-11
+**Wave:** WAFCON 2026 confirmed by CAF for 25 Jul–16 Aug (Morocco, 16 teams, Rabat/Casablanca/Fez). Mixed-pillar wave staged this session, see below.
+**Markets live (as of prior session, 2026-07-09):** 24 — **not re-pulled this session, re-derive from `/api/markets` before trusting.**
+**Category balance (as of prior session):** sports_football heavily over-represented (~95%); macroeconomy, entertainment, fx_crypto, african_internet, politics under-represented.
 
-*(Re-derive current count/balance from `/api/markets` — don't trust the numbers above.)*
+---
+
+## Approved, pending creation (2026-07-11 session)
+
+Three markets fully drafted, priced, and operator-approved this session. Full detail (questions, resolution criteria, frozen Google Trends Topic IDs, extraction protocol) lives in `C:\Dev\Kasiro\kasiro-next-wave-mixed-pillar.md` (Rev 3) — treat that as the source of truth, this is a pointer, not a duplicate.
+
+| Market | Mechanics | Opening price / seed weights | Status |
+|---|---|---|---|
+| Parklive Jozi artist attention battle (Nasty C / Matthew Mole / Rowlene) | Parimutuel | 55 / 23 / 22 | Approved, not yet created in admin |
+| Comic Con Africa attendance ≥70,000 (final post-event only) | AMM | 0.50 YES | Approved, not yet created in admin |
+| Attention Wars (Big Brother Naija / Tyla / WAFCON) | Parimutuel | 45 / 30 / 25 | Approved, not yet created in admin |
+
+All three seed weights/opening prices are oracle-matched historical Google Trends priors (same geo/category/search-type/Topic IDs as the settlement query), compressed toward equal weighting for event-window volatility — not claimed true probabilities. Once created live, remove this section and log actual market IDs under Key Learnings in `markets.md` if anything about the creation process is worth remembering.
 
 ---
 
@@ -32,9 +44,10 @@ Each entry is a topic worth investigating, plus where to re-verify it. The speci
 | Nigeria digital infrastructure race (NIN / mobile penetration / broadband / Kuiper) | NIMC, NCC published figures |
 | Flutterwave IPO filing | Flutterwave official statements, Nigerian business press |
 | Davido album chart debut | TurnTable Charts Nigeria |
-| Attention Wars (Google Trends multi-topic race) | Confirm each topic is still live/upcoming, not past; Google Trends 5-term comparison cap applies |
 | NGX weekly best/worst performer (rotating format) | NGX official data |
-| WAFCON event-page bundles (win/clean sheet/scorer) | Confirm current group stage / fixture status |
+| WAFCON event-page bundles (win/clean sheet/scorer) | Confirm current group stage / fixture status against the 25 Jul–16 Aug CAF-confirmed dates |
+| Remaining WAFCON semifinal/final AMMs, Expectations Index | Held back this wave to avoid adding more sports volume — re-check fixture dates once group stage concludes |
+| Comic Con cosplay champion, Woordfees auction market | Watch until finalists/catalogue published |
 
 **Watchlist (needs a reveal before outcomes can be fixed):**
 - BBNaija S11 housemate social-growth market — needs official cast reveal
