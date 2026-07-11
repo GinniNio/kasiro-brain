@@ -23,11 +23,11 @@ Three markets fully drafted, priced, and operator-approved this session. Full de
 
 | Market | Mechanics | Opening price / seed weights | Status |
 |---|---|---|---|
-| Parklive Jozi artist attention battle (Nasty C / Matthew Mole / Rowlene) | Parimutuel | 55 / 23 / 22 | Approved, not yet created in admin |
-| Comic Con Africa attendance ≥70,000 (final post-event only) | AMM | 0.50 YES | Approved, not yet created in admin |
-| Attention Wars (Big Brother Naija / Tyla / WAFCON) | Parimutuel | 45 / 30 / 25 | Approved, not yet created in admin |
+| Parklive Jozi artist attention battle (Nasty C / Matthew Mole / Rowlene) | Parimutuel | 55 / 23 / 22 | **Draft** in admin — blocked on `source_check` gate (see Key Learnings in markets.md), not yet published |
+| Comic Con Africa attendance ≥70,000 (final post-event only) | AMM | 0.50 YES | **Live** — id `6398fd8f-d2e8-4b32-a5e1-f2fecd7851d5`, published 2026-07-11 |
+| Attention Wars (Big Brother Naija / Tyla / WAFCON) | Parimutuel | 45 / 30 / 25 | **Draft** in admin — same `source_check` blocker as Parklive |
 
-All three seed weights/opening prices are oracle-matched historical Google Trends priors (same geo/category/search-type/Topic IDs as the settlement query), compressed toward equal weighting for event-window volatility — not claimed true probabilities. Once created live, remove this section and log actual market IDs under Key Learnings in `markets.md` if anything about the creation process is worth remembering.
+All three seed weights/opening prices are oracle-matched historical Google Trends priors (same geo/category/search-type/Topic IDs as the settlement query), compressed toward equal weighting for event-window volatility — not claimed true probabilities. Comic Con is live; Parklive and Attention Wars remain drafts pending a fix or workaround for the Trends source-URL gate failure — re-check `/api/admin/markets` (status field) before trusting this table's status column.
 
 ---
 
@@ -46,44 +46,4 @@ Each entry is a topic worth investigating, plus where to re-verify it. The speci
 | Davido album chart debut | TurnTable Charts Nigeria |
 | NGX weekly best/worst performer (rotating format) | NGX official data |
 | WAFCON event-page bundles (win/clean sheet/scorer) | Confirm current group stage / fixture status against the 25 Jul–16 Aug CAF-confirmed dates |
-| Remaining WAFCON semifinal/final AMMs, Expectations Index | Held back this wave to avoid adding more sports volume — re-check fixture dates once group stage concludes |
-| Comic Con cosplay champion, Woordfees auction market | Watch until finalists/catalogue published |
-
-**Watchlist (needs a reveal before outcomes can be fixed):**
-- BBNaija S11 housemate social-growth market — needs official cast reveal
-- Headies award-category parimutuel — needs nominee list published
-
----
-
-## Rejected Ideas — Carry Forward
-
-```json
-[
-  {
-    "idea": "WC 2026 outright winner parimutuel",
-    "reason_rejected": "Field incomplete pending knockout results",
-    "revisit_when": "After the relevant round concludes — re-check current tournament stage"
-  },
-  {
-    "idea": "Headies award category parimutuel bundle",
-    "reason_rejected": "Nominee lists not yet published",
-    "revisit_when": "When nominees are published — check theheadies.com"
-  },
-  {
-    "idea": "CBN MPC decision market (MPR rate band)",
-    "reason_rejected": "Current MPR level and analyst consensus not verified",
-    "revisit_when": "Before next confirmed MPC meeting date — re-verify date and consensus"
-  },
-  {
-    "idea": "USD/NGN NAFEM rate band market",
-    "reason_rejected": "Needs reference-rate band methodology, not yet built",
-    "revisit_when": "Once a band-construction method is defined"
-  }
-]
-```
-
----
-
-## How to update this file
-
-After a Market Brain session: overwrite the Last Known Wave State block with fresh numbers, replace the Candidate Queue with topics only (resist the urge to bake in the facts you just found — link to where to re-check instead), and update Rejected Ideas. Don't append to history here — this file should always reflect only the most recent session, so there's one obvious place to look and no ambiguity about which entry is current.
+| Remaining WAFCON semifinal/final AMMs, Expectations Index | Held back this wave to avoid adding more sports volume — re-check fixtu
