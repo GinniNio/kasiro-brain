@@ -27,9 +27,17 @@
 - Cents-based pricing is the clearest UX pattern in the local market
 - Has H2H and FPL as additional product lines
 
+**CORRECTION (2026-07-09): Bayse DOES run multi-outcome pools.** Live board scan showed gubernatorial races (Osun, Oyo, Ogun, Lagos — 3+ named candidates), ADC VP candidate pool, 2027 presidential winner (Tinubu/Obi/Atiku/Other, 7K trades), NBA presidential election, F1 championship. Multi-outcome parimutuel is NOT an exclusive Kasiro differentiator anymore — Bayse just runs it on simpler percentage-odds display rather than a true pooled/rake mechanic. Kasiro's remaining edge is the AMM+parimutuel *hybrid engine* and cleaner resolution discipline, not multi-outcome existence itself.
+
 **What Bayse does not have:**
-- Multi-outcome parimutuel — this is Kasiro's structural differentiator
 - Africa Watch strip or continent-level framing
+- Disciplined resolution standards — see architecture lessons below
+
+**Bayse market architecture lessons (2026-07-09 board scan):**
+1. **Personality-driven politics outperforms abstract policy markets** — "Will Femi Gbajabiamila be removed as Chief of Staff," "Alex Otti's next party," "Shettima remain Tinubu's running mate" — users already have a view about named people; this beats generic "will policy X pass."
+2. **Event-page bundling, not disconnected cards** — France vs Morocco has ~8 linked markets (winner, scorer, corners, passes, first event) under one event page. Kasiro should bundle 4-6 markets per major fixture (e.g. Nigeria vs Zambia: win / clean sheet / score first / named scorer) instead of one isolated card.
+5. **Activity-count and deadline-ladder formats are proven** — first-day streams, follower-gain races, "leader out by [date]" ladders where multiple dates trade separately. Adapt the *mechanic*, not the *object* — Bayse runs individual-controlled counts (Elon Musk tweet count, "will Ezra Olubi tweet") that are explicitly banned under Kasiro doctrine (creator-influenced outcome, rule #8). Never copy those directly; use aggregate/chart-verified metrics instead (Billboard/TurnTable chart position, not raw self-reported streams).
+6. **Bayse runs at least one banned-type market Kasiro must never copy**: "What will happen to Sowore in his case with the DSS" — active criminal proceedings, banned type #3. Their zero-priced/ambiguous-settlement markets ("Ends by outcome" with no fixed deadline) also actively hurt trust — a pattern to avoid, not admire.
 
 **Bayse legal/policy reference docs** (saved in OneDrive Predicto as competitive reference):
 - Privacy Policy, Terms of Service, Trading Prohibition, FAQ, Help Center — all Bayse originals, useful as drafting templates for Kasiro's own legal docs

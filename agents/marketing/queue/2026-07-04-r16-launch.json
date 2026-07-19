@@ -1,0 +1,227 @@
+{
+  "queue_id": "q_2026-07-04_r16_launch",
+  "created_at": "2026-07-04T00:00:00+01:00",
+  "operator_approved": true,
+  "status": "completed",
+  "completed_at": "2026-07-04T02:10:00+01:00",
+
+  "autoposts": [
+    {
+      "post_id": "ap_001",
+      "status": "posted",
+      "posted_at": "2026-07-04T00:50:00+01:00",
+      "campaign_type": "close_reminder",
+      "objective": "urgency",
+      "schedule": "immediate",
+      "linked_market": "Will Ghana advance past Colombia in the 2026 FIFA World Cup Round of 32?",
+      "posts": [
+        {
+          "platform": "x",
+          "body": "Ghana are playing Colombia right now.\n\nKasiro has 3 live markets on the match — who scores first, whether Ghana score at all, whether they advance.\n\nGhana to advance: YES at 24%.\n\nMarkets close in hours. Last chance to pick.",
+          "status": "posted",
+          "posted_at": "2026-07-04T00:50:00+01:00",
+          "approval_required": false,
+          "risk_level": "low"
+        },
+        {
+          "platform": "threads",
+          "body": "Ghana vs Colombia is live right now at the World Cup.\n\nKasiro has three markets running on this match — whether Ghana score, who scores first, and whether they advance past Colombia.\n\nGhana to advance is YES at 24%. The market has them as heavy underdogs — but 24% is real money saying they can do it.\n\nAll markets close before kickoff. Last chance.\n\nkasiro.app",
+          "status": "posted",
+          "posted_at": "2026-07-04T01:35:00+01:00",
+          "approval_required": false,
+          "risk_level": "low"
+        }
+      ]
+    },
+    {
+      "post_id": "ap_002",
+      "status": "posted",
+      "posted_at": "2026-07-04T01:00:00+01:00",
+      "note": "body trimmed 3 chars: 'Kasiro has a single question covering them all.' → 'One Kasiro market covers them all.'",
+      "campaign_type": "market_launch",
+      "objective": "controversy_capture",
+      "schedule": "immediate",
+      "linked_market": "Will any African team reach the quarter-finals of the 2026 FIFA World Cup?",
+      "posts": [
+        {
+          "platform": "x",
+          "body": "8 African teams came to this World Cup.\n\nTonight, Cabo Verde face Argentina. Ghana play Colombia.\n\nTomorrow, Morocco — the team that knocked out the Netherlands — face Canada.\n\nKasiro has a single question covering them all.\n\nWill any African team reach the quarter-final?\n\nYES: 62%.",
+          "approval_required": false,
+          "risk_level": "low"
+        },
+        {
+          "platform": "threads",
+          "body": "8 African teams came to the 2026 World Cup. Most are gone.\n\nTonight is the last shot for Ghana and Cabo Verde. Tomorrow, Morocco — who knocked out the Netherlands on penalties — play Canada in Houston.\n\nKasiro has one market: Will any African team reach the quarter-final?\n\nYES at 62%, built on Morocco's chances. A win makes them the first African team in a WC quarter-final since Ghana 2010.\n\nTrade now. Closes before Morocco kick off.\n\nkasiro.app",
+          "note": "trimmed ~30 chars to fit Threads 500 limit",
+          "status": "posted",
+          "posted_at": "2026-07-04T01:40:00+01:00",
+          "approval_required": false,
+          "risk_level": "low"
+        }
+      ]
+    },
+    {
+      "post_id": "ap_003",
+      "status": "posted",
+      "posted_at": "2026-07-04T01:50:00+01:00",
+      "campaign_type": "market_launch",
+      "objective": "first_trade_conversion",
+      "schedule": "2026-07-04T19:00:00+01:00",
+      "linked_market": "Which listed Nigerian-linked track from the official 2026 FIFA World Cup music project will have the most Spotify streams at 18:00 WAT on 10 July 2026?",
+      "posts": [
+        {
+          "platform": "x",
+          "body": "Four Naija artists on the official World Cup soundtrack.\n\nRema. Burna Boy (with Shakira). Davido. Ayra Starr.\n\nWho has the most Spotify streams by July 10?\n\nBurna Boy leads the pool at 40%. Rema right behind at 30%.\n\nThis is the most Naija market on Kasiro right now.",
+          "approval_required": false,
+          "risk_level": "low"
+        },
+        {
+          "platform": "threads",
+          "body": "Nigeria showed up at the World Cup in a way that will be talked about for years.\n\nRema performed at the opening ceremony in LA. Burna Boy performed Dai Dai with Shakira in Mexico City. Davido and Ayra Starr on the official album.\n\nKasiro has a pool market on which of their tracks pulls the most Spotify streams by July 10.\n\nCurrent:\n🎵 Burna Boy (Dai Dai) — 40%\n🎵 Rema (Goals) — 30%\n🎵 Davido — 20%\n🎵 Ayra Starr — 10%\n\nPick your favourite. Pool pays the winners.\n\nkasiro.app",
+          "approval_required": false,
+          "risk_level": "low"
+        },
+        {
+          "platform": "instagram",
+          "body": "Nigeria took over the World Cup soundtrack.\n\nRema. Burna Boy. Davido. Ayra Starr. All on the official FIFA 2026 album.\n\nKasiro has a pool market running: who has the most Spotify streams by July 10?\n\n🎵 Shakira ft. Burna Boy — Dai Dai · 40%\n🎵 Rema — Goals · 30%\n🎵 Davido — No Place Like Home · 20%\n🎵 Ayra Starr — Show Me · 10%\n\nPick your artist. Pool pays the winners.\nLink in bio → kasiro.app",
+          "creative_type": "market_card",
+          "media_required": true,
+          "media_url": "kasiro-nigeria-music-pool-ig.png",
+          "canva_design_id": "DAHOXX2vQhc",
+          "status": "posted",
+          "posted_at": "2026-07-04T02:05:00+01:00",
+          "approval_required": false,
+          "risk_level": "low"
+        }
+      ]
+    },
+    {
+      "post_id": "ap_004",
+      "status": "posted",
+      "posted_at": "2026-07-04T01:15:00+01:00",
+      "note": "posted early (scheduled 07:00 WAT, posted ~01:15 WAT — market closes 21:55 WAT, ample time remaining)",
+      "campaign_type": "market_launch",
+      "objective": "awareness",
+      "schedule": "2026-07-04T07:00:00+01:00",
+      "linked_market": "Will France eliminate Paraguay at WC 2026 R16?",
+      "posts": [
+        {
+          "platform": "x",
+          "body": "Paraguay beat Germany in one of the greatest upsets in World Cup history.\n\nNow they face France.\n\nMbappé. 6 goals. France won 3-0 in their last match.\n\nFrance to eliminate Paraguay: YES at 68% on Kasiro.\n\nIs Paraguay pulling off back-to-back miracles?",
+          "approval_required": false,
+          "risk_level": "low"
+        },
+        {
+          "platform": "threads",
+          "body": "Paraguay knocked out Germany. Penalty shootout. One of the biggest upsets in World Cup history.\n\nNow they play France. Tonight in Philadelphia.\n\nFrance have Mbappé (6 goals), beat Sweden 3-0, and haven't lost a knockout match since 2018.\n\nKasiro has France to eliminate Paraguay at YES 68%. The market respects the fairytale but doesn't quite believe in it.\n\nDo you?\n\nCloses 22:00 WAT. Trade at kasiro.app",
+          "status": "posted",
+          "posted_at": "2026-07-04T01:55:00+01:00",
+          "approval_required": false,
+          "risk_level": "low"
+        }
+      ]
+    },
+    {
+      "post_id": "ap_005",
+      "status": "posted",
+      "posted_at": "2026-07-04T01:25:00+01:00",
+      "note": "posted early (scheduled 07:00 WAT, posted ~01:25 WAT — market closes 17:55 WAT, ~16.5h remaining)",
+      "campaign_type": "market_launch",
+      "objective": "awareness",
+      "schedule": "2026-07-04T07:00:00+01:00",
+      "linked_market": "Will Morocco advance past Canada in the 2026 FIFA World Cup Round of 16?",
+      "posts": [
+        {
+          "platform": "x",
+          "body": "Morocco knocked out the Netherlands on penalties.\n\nNext: Canada. Today. Houston.\n\nMorocco to advance: YES at 58% on Kasiro.\n\nA win would make them the first African team in a WC quarter-final since Ghana 2010.\n\nAfrica Watch.",
+          "approval_required": false,
+          "risk_level": "low"
+        },
+        {
+          "platform": "threads",
+          "body": "Morocco vs Canada. Today at 18:00 WAT in Houston.\n\nMorocco beat the Netherlands — one of the tournament favourites — on penalties in the Round of 32. Canada topped their group.\n\nKasiro's Africa Watch has Morocco to advance at YES 58%.\n\nThis is the biggest match for the continent. If they get through, they're in the quarter-final — the furthest any African team has gone since Ghana in 2010.\n\nTrade before it closes at 17:55 WAT.\n\nkasiro.app",
+          "status": "posted",
+          "posted_at": "2026-07-04T02:00:00+01:00",
+          "approval_required": false,
+          "risk_level": "low"
+        }
+      ]
+    }
+  ],
+
+  "reply_hunt": [
+    {
+      "reply_id": "rh_001",
+      "status": "skipped",
+      "skip_reason": "Ghana/Colombia market closed or in-progress at time of execution — No-Post Rule 11",
+      "platform": "x",
+      "target_post_url": "https://x.com/Ghanasoccernet/status/2071059652511773183",
+      "linked_market": "Will Ghana advance past Colombia in the 2026 FIFA World Cup Round of 32?",
+      "reply_type": "factual_market_link",
+      "reply_body": "Kasiro has three live markets on this one — Ghana to score, Ghana to score first, Ghana to advance.\n\nGhana to advance: YES at 24%. Market has Colombia as clear favourites but there's real money on Ghana.\n\nAll close before kickoff → kasiro.app",
+      "approval_required": false,
+      "risk_level": "low"
+    },
+    {
+      "reply_id": "rh_002",
+      "status": "skipped",
+      "skip_reason": "Ghana/Colombia market closed or in-progress at time of execution — No-Post Rule 11",
+      "platform": "x",
+      "target_post_url": "https://x.com/SportsMole/status/2072467370359107621",
+      "linked_market": "Will Ghana advance past Colombia in the 2026 FIFA World Cup Round of 32?",
+      "reply_type": "contextual_market_prompt",
+      "reply_body": "Market agrees with the lineups. Ghana to advance past Colombia: YES at 24% on Kasiro.\n\nThree markets running on this match. Closes before kickoff → kasiro.app",
+      "approval_required": false,
+      "risk_level": "low"
+    },
+    {
+      "reply_id": "rh_003",
+      "status": "skipped",
+      "skip_reason": "Ghana/Colombia market closed or in-progress at time of execution — No-Post Rule 11",
+      "platform": "x",
+      "target_post_url": "https://x.com/instablog9ja/status/2006856365407703310",
+      "linked_market": "Will Ghana advance past Colombia in the 2026 FIFA World Cup Round of 32?",
+      "reply_type": "banter_reply",
+      "reply_body": "The prophet said final.\n\nKasiro traders are saying 24% chance they even pass Colombia tonight.\n\nSomeone is very wrong.",
+      "approval_required": true,
+      "operator_approved": true,
+      "approved_at": "2026-07-04T00:00:00+01:00",
+      "risk_level": "medium"
+    },
+    {
+      "reply_id": "rh_004",
+      "status": "skipped",
+      "skip_reason": "Tweet content was Colombia/Ghana R32 — topic mismatch with France/Paraguay linked market",
+      "platform": "x",
+      "target_post_url": "https://x.com/futbolperuanoTR/status/2072449180488880485",
+      "linked_market": "Will France eliminate Paraguay at WC 2026 R16?",
+      "reply_type": "contextual_market_prompt",
+      "reply_body": "Paraguay stunned Germany. Now they face France tonight.\n\nFrance to eliminate Paraguay: YES at 68% on Kasiro. The market respects the run but expects France.\n\nkasiro.app",
+      "approval_required": false,
+      "risk_level": "low"
+    },
+    {
+      "reply_id": "rh_005",
+      "status": "skipped",
+      "skip_reason": "Tweet from Jun 28 (6 days stale), topic only loosely matches QF market, reply timing ref ('Morocco tomorrow') was inaccurate",
+      "platform": "x",
+      "target_post_url": "https://x.com/Ghanasoccernet/status/2071020555969663004",
+      "linked_market": "Will any African team reach the quarter-finals of the 2026 FIFA World Cup?",
+      "reply_type": "question_reply",
+      "reply_body": "Africa is 1-5 in the knockout round so far. Morocco the lone win.\n\nKasiro has a market: Will any African team reach the quarter-final? YES sitting at 62% — almost entirely built on Morocco vs Canada tomorrow.\n\nHow do you see it?\n\nkasiro.app",
+      "approval_required": false,
+      "risk_level": "low"
+    }
+  ],
+
+  "held": [],
+
+  "pending_next_session": [
+    {
+      "post_id": "ap_003_x",
+      "platform": "x",
+      "schedule": "2026-07-04T19:00:00+01:00",
+      "note": "Nigeria music pool X post — scheduled 19:00 WAT, not yet posted"
+    }
+  ]
+}

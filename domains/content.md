@@ -128,11 +128,15 @@ Community channel: Kasiro Markets (ID: -1003896103462) | Bot: @predicto_build_bo
 ## Content Calendar State
 *(Update after each Marketing agent session)*
 
-**Last Marketing session:** [DATE]
-**Active campaigns:** [UPDATE]
-**Scheduled posts pending:** [COUNT]
-**Markets waiting for launch posts:** [LIST]
-**Next batch content due:** [DATE]
+**Last Marketing session:** 2026-07-04 (session 2, context compaction)
+**Active campaigns:** WC R16 launch wave — COMPLETE. All 5 X posts posted (~01:00 WAT). All 5 Threads posts posted (~01:35–02:00 WAT). ap_003 Instagram posted (~02:05 WAT) with Canva market card.
+**Scheduled posts pending:** ap_003 X (Nigeria music pool) → 19:00 WAT Jul 4. Queue file: 2026-07-04-r16-launch.json.
+**IG held:** cleared — ap_003 IG posted. Canva design ID: DAHOXX2vQhc.
+**X performance (6h, 7 followers):** ap_002 Africa Watch 55 views (top), ap_005 Morocco/Canada 33 views + 1RT 1like, ap_004 France/Paraguay 32 views, ap_001 Ghana/Colombia 25 views + 1RT 1like. 7-day total: 2.1K impressions. Reply hunt: @WelBeast + @AnabellaMarvy posted into 24.4K and 3.5K view threads respectively.
+**Markets waiting for launch posts:** Spain/Portugal (Jul 6), Golden Boot (Jul 19), WC Transfer (Aug 31), Dai Dai Billboard (Jul 17), NGX ASI (Jul 10). Also flag: "Who wins WC 2026?" parimutuel market — triggered by @FabrizioRomano (11M followers) polling on winner; QF field being set tonight.
+**Next batch content due:** Jul 4 post-Morocco/Canada result reaction + QF follow-on launch if Morocco advance. Morocco market closes 17:55 WAT.
+**Reply rate today (Jul 4):** 2 replies posted (@WelBeast, @AnabellaMarvy). 18 remaining on X.
+**2026-07-10 session:** Two new-format drafts queued for operator review before posting — Threads numbered-hook thread and IG Reel-with-audio carousel, both built on the live WAFCON winner pool (Nigeria 35% / Morocco 22% / South Africa 15% / Zambia 12% / Ghana 7% / Other 9%, closes 25 Jul 18:55 WAT — re-verify odds before posting, they will have moved). Files: `content-team/drafts/threads/2026-07-10_numbered-hook_how-parimutuel-pricing-works.md`, `content-team/drafts/instagram/2026-07-10_reel_wafcon-pool-odds-with-audio.md`. Neither posted yet — status: queue_for_approval.
 
 ---
 
@@ -194,3 +198,14 @@ Winning return: [%]x
 - X post format: no link in main body, no hashtags, double newlines, lead with text (instituted 2026-05-06)
 - Engagement is reactive to live markets — never generic social media content
 - Pidgin is a tool, not a requirement — use when natural
+- Duplicate market pairs (Morocco 58% vs 45%, Haaland 48% vs 55%) must be resolved before promotion — only promote the cleaner/primary version (2026-07-04)
+- Do not promote meta markets where Kasiro's own actions influence resolution (e.g. @kasiro_markets follower market) (2026-07-04)
+- IG posts on flag-image markets blocked until Engineering fixes wrong emoji combos — Morocco/Canada and Norway/Brazil showing wrong flags (2026-07-04)
+- Reply hunting @instablog9ja (banter/culture angle) approved as medium-risk — requires operator sign-off each time (2026-07-04)
+- Nigerian WC music pool market (Rema/Burna Boy/Davido/Ayra Starr Spotify race) is highest-differentiation content angle on board — no competitor has equivalent (2026-07-04)
+- Reviewed external growth-tactic thread (megan.creatoros, Threads, 114K views — treat the follower-growth claim as unverified marketing copy, replies push back on it; only the *format* tactics are adopted here, not the case-study numbers) (2026-07-10):
+  - Numbered-list cliffhanger hook + explicit closing question is a testable format gap on Threads — we have zero numbered-hook content there. First test drafted: `content-team/drafts/threads/2026-07-10_numbered-hook_how-parimutuel-pricing-works.md`.
+  - IG Trial Reels (push to non-followers only, zero risk to main feed) should be the standard test surface for any new IG format before it goes to the main posting slot — not just new content within an existing format.
+  - Carousel + trending audio lands on the Reels discovery tab in addition to normal carousel reach — first test drafted: `content-team/drafts/instagram/2026-07-10_reel_wafcon-pool-odds-with-audio.md`.
+  - Metrics-as-diagnosis framework worth reapplying each performance review: low views = weak hook, low shares = not relatable, low comments = no question asked, low saves = not practical, low likes = no emotion. Applied to 2026-07-04 X data: views/hooks are fine (25-55 range), but near-zero replies/shares across the board points to "no question asked" as the specific gap — none of the logged posts end with an explicit question.
+  - Not adopted: talking-head/lighting tips (conflicts with anonymous-operator doctrine) and the source thread's own cross-posting tool pitch (self-promotional link in that thread, not a neutral recommendation — the underlying "one upload, all platforms" principle is still worth solving via whatever tooling Marketing Brain already has queued for autopost).

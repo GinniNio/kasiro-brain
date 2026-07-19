@@ -98,8 +98,8 @@ Run `/eng phase-spec --spec "shared state tables"` to generate the Replit implem
 ## Current State Snapshot
 *(Update this section after every significant session)*
 
-**Last updated:** 2026-07-09
-**Active focus:** Differentiate Kasiro through African attention, race, basket, reaction, index and Future Africa market franchises
+**Last updated:** 2026-07-19
+**Active focus:** Kora NGN deposits are LIVE in production at 45% rollout (payouts still off). Immediate next step: confirm CI is green on `main` — a push from this session broke it (6 failing tests, fix dispatched but not confirmed). Full detail in `domains/eng.md` → Naira Payments section, and `C:\Dev\Kasiro\docs\handoffs\2026-07-19-kora-ngn-payments-production-launch.md`. Also ongoing: differentiate Kasiro through African attention, race, basket, reaction, index and Future Africa market franchises
 **Current market wave:** Check `domains/markets.md`
 **Market strategy:** Check `domains/market-strategy.md`
 **Open product items:** Check `domains/product.md`

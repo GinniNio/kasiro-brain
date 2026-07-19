@@ -196,7 +196,56 @@ Marketing Brain finds relevant public conversations and inserts Kasiro markets w
 6. Conversation is not about tragedy, death, disaster, or sensitive harm
 7. Reply does not look like spam
 8. Reply does not imply guaranteed profit
-9. Enough time remains before market closes for users to act
+9. Enough time remains before market
+10. Source tweet is not stale (posted within 48h — older tweets get low reply visibility and timing references become inaccurate)
+
+### Reply hunt timing rule
+**Find reply hunt candidates BEFORE drafting autopost copy, not after.** Surfacing candidates early lets the session use live market prices and timing refs that are still accurate. Reply hunting into a stale tweet wastes a slot.
+
+---
+
+## Execution Rules
+
+### Posting order
+X and Threads posts for the same market should fire in the same pass — not hours apart. For time-sensitive markets, a Threads post 6h after the X post may miss the window entirely. Run: X post → Threads post → next market. Not all X → then all Threads.
+
+### Threads character limit
+Threads enforces a 500-character limit. Queue copy written for Threads must be validated against this before the session. If the body is over 500 characters in draft, trim it then (not live in browser). Rule: any Threads body over 450 characters in the queue JSON should carry a `"threads_chars": N` annotation.
+
+### Cross-platform framing
+Continent-wide or multi-market framing outperforms single-match posts on reach. When multiple related markets are live (e.g. several African teams), lead with the overarching market ("Will any African team reach the QF?") rather than individual match posts. Individual match posts can follow as supporting content.
+
+### Instagram pipeline (Canva MCP)
+Confirmed working pattern for market card IG posts:
+1. Generate with `mcp__bb14fff5__generate-design` (design_type: instagram_post)
+2. User selects from 4 candidates → `create-design-from-candidate`
+3. Export PNG via `export-design` (format: png, quality: pro)
+4. Download to outputs via bash curl
+5. Upload via `mcp__claude-in-chrome__file_upload` to the IG file input ref
+6. Add caption → Share
+Record Canva design_id in queue JSON for future edits.
+
+---
+
+## Key Learnings
+*(Appended after each session)*
+
+### 2026-07-04 — WC R16 launch session
+
+**Performance (X, 6h post, 7 followers):**
+- Continent-wide framing (ap_002: "8 African teams / Will any African team reach QF?") = 55 views — top post
+- Match-specific posts: 25–33 views each
+- Reply hunt into high-view threads (24K, 3.5K) drives more reach than organic posting at this follower count
+- 7-day total: 2.1K impressions
+
+**Rules derived:**
+- Continent/multi-team framing > single-match framing when multiple markets are live simultaneously
+- Reply hunt candidates must be sourced before drafting — stale tweet check (48h) required
+- Threads 500-char limit caught live — trim in queue spec, not in browser
+- X + Threads must post in same pass for time-sensitive markets
+- ap_003 X (Nigeria music pool) still pending (19:00 WAT) — confirm posted in next session
+
+**Market Brain handoff flag logged:** "Who wins WC 2026?" parimutuel market — @FabrizioRomano (11M) polling on WC winner signals strong demand. Draft before QF field is set. closes for users to act
 
 ### Do not reply if
 

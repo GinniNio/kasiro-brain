@@ -1,5 +1,5 @@
 # Kasiro Product Intelligence
-**Domain owner:** Product agent | **Last updated:** 2026-07-03
+**Domain owner:** Product agent | **Last updated:** 2026-07-12
 
 ---
 
@@ -101,13 +101,31 @@ Exact items: check `C:\Dev\Kasiro\ACTION_PLAN.md` for current status. As of last
 **Operating constraint:** One Pillar One Week. Finite weekly hour budget. Nothing added mid-week.
 
 **Backlog priorities (approximate rank):**
-1. Loop 6 P0 hardening
-2. Parimutuel open items (pool card, lock-time, mobile sheet)
-3. Market Gates scenario tests (activation-rollback first)
-4. Loop 7 outward stack
-5. Daily-recurring market franchise (closes category gap vs 2sabi/Bayse)
-6. Naira wallet exploration (closes liquidity barrier for new users)
+1. Naira payments (Kora) production hardening — see section below; treat as P0 given real money is moving
+2. Loop 6 P0 hardening
+3. Parimutuel open items (pool card, lock-time, mobile sheet)
+4. Market Gates scenario tests (activation-rollback first)
+5. Loop 7 outward stack
+6. Daily-recurring market franchise (closes category gap vs 2sabi/Bayse)
 7. H2H / social wager feature (closes gap vs Bayse)
+
+---
+
+## Naira Payments (Kora) — Status as of 2026-07-12
+
+**Provider:** Kora (not Paycrest — Paycrest plan in `ACTION_PLAN.md`, last updated 2026-05-16, is superseded and should not be treated as current truth for payments).
+
+**Current state:** Live in production, staged rollout — not yet at 100%. Deposits confirmed flowing with `reason_code='deposit_ngn'` in the ledger as of 2026-07-05 (referral funnels, platform stats, churn jobs, reconciliation all updated to include it — see `eng.md` / `.agents/memory/deposit-ngn-consumers.md`). Rollout percentage is controlled via `KORA_DEPOSIT_ROLLOUT_PERCENT` / `KORA_PAYOUT_ROLLOUT_PERCENT` env flags plus an internal QA allowlist (`server/integrations/kora/rollout.ts`) — actual live percentage lives in Replit env vars, not in-repo.
+
+**Kora staging APIs are deployed on staging** (per operator, 2026-07-12) — separate from the production staged-rollout gating above. Confirm staging-vs-prod Kora credentials are not cross-wired before further staging test runs.
+
+**Blocking items before wider rollout (full detail in `eng.md`):**
+1. Charge-verification endpoint status is contradictory in code (`client.ts` treats it as unconfirmed/blocked; `verifier.ts` claims confirmed) — must be resolved, this is the trust boundary for crediting user wallets.
+2. 9 CHECK constraints (incl. `withdrawals`, `trades`, `parimutuel_buckets`, `ledger_entries`) reverted from dev after Replit Publish DDL-generator bug — prod currently has zero DB-level guards on withdrawal status values.
+3. Kora payout reconciliation job (`server/jobs/kora-payout-reconciliation.ts`) has no `worker_heartbeats` write — silent-failure risk on money-moving code.
+4. Compliance/licensing — CAC registration complete under Tabula Digital; Kora KYC/KYB in progress as of 2026-07-12, gates live API keys. `ADR-003`'s Lagos State Lotteries Authority licensing question: decided continue as-is, no separate gaming license (2026-07-12).
+
+Test coverage is solid (16 real test files against Kora mocks), but no confirmed end-to-end run against Kora's actual sandbox.
 
 ---
 
@@ -116,11 +134,12 @@ Exact items: check `C:\Dev\Kasiro\ACTION_PLAN.md` for current status. As of last
 | Decision | Date | Rationale |
 |---|---|---|
 | Predicto 1 (Supabase/Vercel) shut down | 2026-04-03 | Kasiro (Replit/Drizzle) is sole codebase per ADR-001 |
-| USDT-only MVP (no Naira) | — | Regulatory simplicity; pan-African rail |
+| ~~USDT-only MVP (no Naira)~~ SUPERSEDED 2026-07-12 | — | Naira deposits/withdrawals via Kora are live in production, staged rollout. See Naira Payments (Kora) section below. |
 | Hybrid engine (AMM + parimutuel) | — | Structural differentiator; no local competitor has this |
 | No public founder voice | — | Operator anonymity requirement |
 | Niche daily scan retired | 2026-05-07 | Scrape scripts missing from repo |
 | Rebranded Predicto → Kasiro | 2026-04-06 | kasiro.app live; brand identity established |
+| No separate gaming/lotteries license — continue as-is | 2026-07-12 | CAC-registered as Tabula Digital, tech-services objects clause; Kora KYC/KYB is the compliance gate that matters for payments, not a state gaming license |
 
 ---
 
