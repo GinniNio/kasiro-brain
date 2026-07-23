@@ -146,8 +146,17 @@ Test coverage is solid (16 real test files against Kora mocks), but no confirmed
 ## Current Open Items State
 *(Update after each Product agent session)*
 
-**Last Product session:** [DATE]
-**Active sprint focus:** Check `C:\Dev\Kasiro\ACTION_PLAN.md`
-**Highest-priority open item:** [UPDATE]
-**Items closed this week:** [LIST]
-**New items added:** [LIST]
+**Last Product session:** 2026-07-21 — live-site defect saga (round 2/3 audits) fully closed: TBC-date regression, versus-strip narrowing, close-time data-fix, fee display, pool probability mismatch, formatting standardization, category counts, and featured-card inconsistency all reported done by operator. Full detail in `domains/eng.md`. A light spot-check is recommended next session (not a strong doubt — this session's accuracy on "done" reports was high after the initial reconciliation surprise below), but no open blockers as of now.
+
+**Kasiro UX improvement plan — CLOSED for this stretch.** Full plan (Phase 0 trust defects → 1A card declutter → 1B filter chips → 1D Naira-copy audit → Phase 2 mobile trading → Phase 3 Results page + activityMap data-integrity fix) shipped and re-verified by direct code inspection after a live-site audit caught a mid-session gap between "operator says done" and what was actually live on kasiro.app (root cause not fully diagnosed, but a same-day code re-check confirmed the substance of the work is present on the branch this session's tooling reflects). Full narrative in `domains/eng.md` and the 9 handoff docs at `docs/handoffs/2026-07-20-*.md` if any decision needs revisiting.
+
+**Two known gaps, operator-accepted as-is, not open items:** the homepage hero still lacks an explicit Naira-proof line and its CTA (server-driven via an A/B copy-variant system) defaults to "Start Predicting" rather than the originally-specified Naira-funding CTA; and two pieces of dead code (`TickerBar.tsx`, an unused `CategoryRail`/`HOMEPAGE_RAILS` component) remain in the codebase unreferenced. Both explicitly ruled to stay as-is by the operator — do not re-raise without new instruction.
+
+**3B (Trending line) — deferred, not on the roadmap.** Needs a real data-led threshold or an editorial "Featured" reframing before it's revisited; homepage discovery doesn't need it at current market size per the operator's own call.
+
+**Highest-priority open item:** None blocking from the UX plan. Orange-usage-restraint visual audit is the only leftover item, and it needs a human/screenshot pass, not product or engineering scoping.
+
+**Standing process note for this brain:** this session is the reason "shipped" now requires a live-URL check (or an explicit note that one hasn't happened) before being logged as closed — chat confirmation and sandbox code reads alone produced a real false-positive mid-session. Apply that bar going forward.
+
+**Items closed this week:** Full UX plan (Phase 0 through Phase 3 / Production Reconciliation).
+**New items added:** None pending — Phase 4 stays gated on live usage data per the operator's plan; not scoped.

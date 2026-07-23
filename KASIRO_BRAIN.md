@@ -98,8 +98,8 @@ Run `/eng phase-spec --spec "shared state tables"` to generate the Replit implem
 ## Current State Snapshot
 *(Update this section after every significant session)*
 
-**Last updated:** 2026-07-19
-**Active focus:** Kora NGN deposits are LIVE in production at 45% rollout (payouts still off). Immediate next step: confirm CI is green on `main` — a push from this session broke it (6 failing tests, fix dispatched but not confirmed). Full detail in `domains/eng.md` → Naira Payments section, and `C:\Dev\Kasiro\docs\handoffs\2026-07-19-kora-ngn-payments-production-launch.md`. Also ongoing: differentiate Kasiro through African attention, race, basket, reaction, index and Future Africa market franchises
+**Last updated:** 2026-07-20
+**Active focus:** Kasiro UX improvement plan is CLOSED — Phase 0 through Phase 3 (filter redesign, Naira-first copy audit, mobile trading usability, Results page rework, an activityMap data-integrity fix) all shipped and code-verified. Two accepted gaps (missing hero Naira-proof line, two dead-code files) and one deferred item (Trending line) — see `domains/eng.md` for detail; full narrative across 9 docs at `docs/handoffs/2026-07-20-*.md`. **Process note carried forward:** this session found a real gap between "operator confirms done" and what's actually live in production — "shipped" now requires a live-URL check before being logged as closed. Kora NGN deposits remain LIVE in production at 45% rollout (payouts still off). Standing item: confirm CI is green on `main` — a push from the 07-19 session broke it (6 failing tests, fix dispatched but not reconfirmed). Full detail in `domains/eng.md` → Naira Payments section, and `C:\Dev\Kasiro\docs\handoffs\2026-07-19-kora-ngn-payments-production-launch.md`. Also ongoing: differentiate Kasiro through African attention, race, basket, reaction, index and Future Africa market franchises
 **Current market wave:** Check `domains/markets.md`
 **Market strategy:** Check `domains/market-strategy.md`
 **Open product items:** Check `domains/product.md`
