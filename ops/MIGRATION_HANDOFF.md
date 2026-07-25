@@ -1,6 +1,40 @@
 # HANDOFF — Kasiro Migration: Current State & Next Steps
 
-_Last updated: 25 July 2026. Give this file to a fresh Claude Code / Codex / Cowork instance to resume with full context._
+_Last updated: 25 July 2026 (end of session). Give this file to a fresh Claude Code / Codex / Cowork instance to resume with full context._
+
+---
+
+# ▶ START HERE — resuming 26 July 2026
+
+**Where we got to:** the app is live on Render against Kaye's own Neon, the full smoke test passed (read **and** write paths), and the AMM pricing defect that was live since launch is fixed and verified end-to-end with a real trade. Neon is on Launch with PITR/scale-to-zero configured. The env parity audit is done. **The cutover itself has not started.**
+
+**Do these first, in this order. None require a freeze.**
+
+1. **Decide the Kora deposit question — this is live and outstanding.** Deposits went to **100%** rollout on 25 Jul while `KORA_PAYOUTS_ENABLED = false`. Naira in, no Naira out. Either enable payouts or pull deposits back to a low percentage; use `KORA_INTERNAL_USER_IDS` for testing (it bypasses the rollout gate). See "Kora — deposits opened to 100%" below. **This is a product/trust decision, not an engineering task, and it blocks nothing technically — but it is the highest-stakes open item.**
+
+2. **Dockerfile: add `ARG`/`ENV` for the `VITE_*` vars** before `npm run build`. Without it, `VITE_KORA_MODE=live` cannot reach the Render build and Kora checkout silently falls back to test mode. Exact snippet in the env audit section.
+
+3. **Prompt 13: switch the dump to `--format=custom`** so the restore can use `pg_restore -j`. Shortens the freeze window, which now has a real cost.
+
+4. **Add a seed-validity assertion** before the HD wallet swap. `Buffer.from(seed,"hex")` accepts malformed input and derives a wrong-but-plausible address set with no error.
+
+5. **Confirm CI is green on `main`** — outstanding since the 07-19 push (6 failing tests, fix dispatched, never reconfirmed).
+
+**Then the cutover** (§ "Immediate next actions" → step 3). Now needs a maintenance window and a user notice, because real Naira is flowing.
+
+**The three things most likely to bite, all silent failures:**
+
+| | Why it kills you |
+|---|---|
+| `CRON_LEADER=1` | Unset = TronGrid polling never runs = real USDT deposits land on-chain and are never credited |
+| `TRONGRID_API_KEY` | Unset = deposit addresses 503, no issuance and no detection |
+| Prod `HD_WALLET_MASTER_SEED` | Wrong = user funds route to addresses Kaye does not control |
+
+**Session log for 25 Jul:** fixed the static-asset blocker; found and fixed a CORS gap that had killed every write path; ran the full smoke test; found, diagnosed and verified the fix for the AMM pricing inversion (SEV1, now RESOLVED — see `SEV1-amm-pricing-replit-prompt.md`); specified and shipped the parimutuel rake-convention fix (SEV2 — see `SEV2-parimutuel-rake-convention.md`); completed the env parity audit (45 vars missing on Render).
+
+**Known-open, not blocking cutover:** price formatters mislabel currency in two places (`₦65` for a ₦890 share price; `$100.00` for a ₦100 minimum) — one focused pass, worth doing before real volume. `/dev/pool-layouts` still hardcodes rake-on-total. One production market still has a `NULL proposition_fingerprint`, invisible to the duplicate gate. Unknown `/api/*` paths return HTML instead of a JSON 404. CSP still allows `connect-src https://api.anthropic.com`.
+
+---
 
 **Canonical location:** `kasiro-brain/ops/MIGRATION_HANDOFF.md` (repo `github.com/GinniNio/kasiro-brain`). Any copy in an outputs or uploads folder is a stale snapshot — edit this one.
 
@@ -94,6 +128,7 @@ These figures move while prod is live. **The authoritative baseline is taken at 
 ---
 
 ## WHERE WE ARE RIGHT NOW
+*(detail — see START HERE at the top for the resume checklist)*
 
 **App is LIVE on Render against Kaye's own Neon, serving restored DEV data.**
 
@@ -128,13 +163,77 @@ Cost ~$20–80/mo.
 
 ### 2. Smoke-test the dev clone while it is still harmless
 
-Last window where breaking things is free. In a browser against `kasiro-prod.onrender.com`:
+**Read paths: COMPLETE 2026-07-25.** All render, all API 200 except the one noted below.
 
-- signup / login
-- market list → open a market page
-- place a trade
-- Results page
-- admin route (403 until `ADMIN_EMAILS` is set — set it, confirm it works)
+| Screen | Result |
+|---|---|
+| Home / market list / filters / categories | ✅ |
+| Market detail (AMM + parimutuel cards) | ✅ |
+| Signup / login | ✅ (after the CORS fix) |
+| `/portfolio` | ✅ ₦6,835 / $5.00, no positions, P&L zeroed |
+| `/wallet` | ✅ balance correct, demo-credit banner correctly gates withdrawals |
+| `/leaderboard` | ✅ (empty — no settled markets) |
+| `/indices` | ✅ ("0 live now", all Coming soon — product state, not a defect) |
+| Results (nav → `/winners`) | ✅ "No resolved markets this week" |
+| Console errors | ✅ none from app code (only a browser wallet-extension collision) |
+
+> Note: `/results` is not a route — the Results nav item points at `/winners`.
+
+**Write path: COMPLETE 2026-07-25 — real trade executed, arithmetic exact.**
+
+Bought 0.37 YES on the Davido market (pools 35/65, quoted 0.65). Every figure matched the complete-sets AMM to six decimals:
+
+```
+                        expected        actual
+cost                    NGN 329.2       NGN 329       ✓
+fee (2.5%)              NGN 8.2
+total debited           NGN 337.4       NGN 337   (6,835 -> 6,498)  ✓
+pools after   yes       34.870811       34.870811     ✓
+              no        65.240811       65.240811     ✓
+yesPrice      0.65  ->  0.651681        0.651681      ✓ rose
+volume                  0.246831        0.246831      ✓
+```
+
+This closes SEV1 at every layer — quote, execution, pool state, and ledger. Buying YES raises the YES price on a live trade, not just in a unit test.
+
+**Still outstanding:**
+
+- [ ] **Admin access needs a DB update, not just env.** `requireAdmin` (`server/middleware/requireAdmin.ts`) fails closed on TWO conditions: `user.role === "admin"` (L8) AND email present in `ADMIN_EMAILS` (L15). Setting the env var satisfies only the second. `role` is set automatically only in `server/passport.ts` (OAuth strategies) — `handleRegister` for email signup never sets it. Fix:
+  ```sql
+  UPDATE users SET role = 'admin' WHERE email = '<operator email>';
+  ```
+  **The same two-step applies at cutover on prod.** Swapping `ADMIN_EMAILS` alone will not grant access.
+
+### Display bugs found during the trade (presentational only — cost basis and P&L are correct)
+
+- **Portfolio price-per-share is mislabelled.** True price is `0.650841 USDT = NGN 890`. The card renders `Bought at: NGN 65 · Now NGN 65` — the USDT price multiplied by 100 and given a Naira symbol. Prediction-market cents mislabelled as Naira, off by ~13.7x.
+- Same family as the trade-panel bug logged earlier: `Min stake: $100.00` in USDT mode, where the Naira figure (100) is rendered with a `$` prefix instead of converted.
+
+Both point at a systematic problem in the **price formatters** specifically — the amount formatters (cost, balance, P&L) are correct throughout. Worth fixing as one pass rather than individually.
+
+### ⚠️ FOUND 2026-07-25 — second missing env var: `TRONGRID_API_KEY`
+
+`GET /api/wallet/deposit-info` returns **503 "Deposit system not configured"** on every page load (it is fired by a global wallet hook, not just `/wallet`).
+
+Cause: `isHDWalletConfigured()` in `server/trongrid.ts:59` requires **both** vars:
+
+```ts
+return !!HD_WALLET_MASTER_SEED && !!TRONGRID_API_KEY;
+```
+
+`HD_WALLET_MASTER_SEED` is set on Render; **`TRONGRID_API_KEY` is not** — and it appears in neither the "currently set" nor the "deliberately unset" list in this document. Same class of gap as the CORS one: an unlisted variable that silently disables a core money path.
+
+`server/trongrid.ts:193` shows the deposit *polling loop* short-circuits on the same check, so both address issuance and deposit detection are off without it.
+
+**Failing closed here is correct behaviour** — the dev clone must not hand out addresses derived from the dev seed. But at cutover, if `TRONGRID_API_KEY` is missing, **no user can deposit** and nothing in the UI explains why.
+
+**Use this endpoint as the cutover canary:** after setting the prod seed and key, `GET /api/wallet/deposit-info` must return **200**, and the returned address must match a known-good production deposit address for that user.
+
+### ⚠️ Related hardening gap — seed validity is never checked
+
+`isHDWalletConfigured()` tests **presence, not validity**. `getMasterSeed()` (`trongrid.ts:63-68`) accepts a BIP-39 mnemonic *or* falls through to `Buffer.from(HD_WALLET_MASTER_SEED, "hex")`, which silently ignores invalid characters and truncates.
+
+A malformed prod seed therefore produces a **valid-looking but wrong** address set, with no error anywhere — which is exactly the catastrophic scenario in the HD-wallet hard gate below. Add a length/format assertion on the derived seed before the cutover swap, and verify a known user's deposit address rather than trusting a clean boot.
 
 ### 3. Real prod cutover
 
@@ -293,6 +392,145 @@ If behind as well, prefer `git pull --rebase origin main` — this repo is a lin
 - **Bitwarden:** vault for all secrets. See `Using Bitwarden for the Kasiro Migration.docx`.
 - **Cloudflare:** DNS + proxy, **LIVE** (see Cloudflare section). Hardening deferred.
 - **Cloudflare R2:** intended for prod dump storage. Dev rehearsal used the download-only variant, so R2 / AWS SDK not needed yet — AWS SDK was **removed** from `package.json` to fix the Docker build (see npm saga).
+
+---
+
+## ENV PARITY AUDIT — 2026-07-25 (Replit Secrets vs Render)
+
+Render has **8** vars; Replit has **32**. **25 missing.** Nothing is on Render but absent from Replit. Only three values legitimately differ: `DATABASE_URL`, `HD_WALLET_MASTER_SEED`, `PLATFORM_USER_ID`.
+
+Replit **Configurations** holds a further **20** non-secret vars, none of them on Render.
+
+### 🔴 `CRON_LEADER` — mandatory at cutover, currently unset on Render
+
+```
+index.ts:646  if (process.env.CRON_LEADER === "1") { ...start workers... }
+index.ts:689  else → "Not cron leader — skipping background workers"
+```
+
+Gates **every** background job: TronGrid deposit polling, settlement, expiry alerts, resolution checks. Replit Configurations has `CRON_LEADER = 1`.
+
+Unset is correct while Render runs *alongside* live Replit. **At cutover Render becomes the only host — `CRON_LEADER=1` becomes mandatory.** Left unset, deposits are never credited even with `TRONGRID_API_KEY` present, because the polling loop never starts. This document previously listed it only under "deliberately unset"; that framing is safe now and catastrophic if carried through the cutover.
+
+### 🔴 Kora — deposits opened to 100% on 2026-07-25 (mid-migration)
+
+```
+KORA_DEPOSIT_ROLLOUT_PERCENT = 100     ← was 0 earlier the same day
+KORA_PAYOUT_ROLLOUT_PERCENT  = 45
+KORA_PAYOUTS_ENABLED         = false   ← payouts DISABLED regardless of the 45%
+KORA_PAYMENTS_ENABLED        = true
+KORA_MODE                    = live
+KORA_INTERNAL_USER_IDS       = 7553487c-d93f-4b91-9d93-e8b6db620ea3
+```
+
+Verified live: `GET https://kasiro.app/api/payments/config` → `koraPaymentsEnabled: true, koraPayoutsEnabled: false`.
+
+**Documentation correction:** earlier text here and in memory claimed *"deposits live at 45% rollout, payouts still off"*. The 45% was always on **payouts**, which are disabled. Deposits were at **0**, and are now at **100**.
+
+#### ⚠️ Deposits open, payouts closed — one-way door
+
+There is a technical exit: a Kora NGN deposit clears `is_demo` (`server/services/ngn-payments.ts:770`), unlocking USDT withdrawal to a TRC-20 address. But that requires a Tron wallet. A Naira-first user who deposited ₦5,000 by bank transfer has no practical way to withdraw in Naira while `KORA_PAYOUTS_ENABLED = false`.
+
+Doctrine rule 1 (trader trust) argues for either enabling payouts alongside, or holding deposits at a low rollout until they are. Note `KORA_INTERNAL_USER_IDS` bypasses the rollout gate, so end-to-end testing does not require exposing real users. Regulatory implications in Nigeria are out of scope here and need proper advice.
+
+#### ⚠️ This raises cutover risk materially
+
+Every earlier assumption in this document was priced on *no real users, no real money*. That is no longer true:
+
+- **The freeze window now has a real cost.** Users mid-deposit during dump/restore will see failures. Needs a maintenance window and a notice, not a silent switch.
+- **`CRON_LEADER` moves from important to critical.** Kora deposits credit via webhook, but **USDT deposits credit via the TronGrid polling loop, which only runs on the cron leader**. Unset at cutover = real on-chain deposits are never credited. Users watch funds leave their wallet and never arrive.
+- **`KORA_NOTIFICATION_URL = https://kasiro.app/api/webhooks/kora`** is correct after DNS moves, but there is a window during the switch where delivery target is ambiguous. Confirm Kora's failed-webhook retry behaviour before freezing.
+
+**Recommendation: hold deposits at a low rollout percentage until after cutover.** Changing the money-in path and the hosting substrate in the same week means two novel failure sources debugged simultaneously.
+
+### `VITE_KORA_MODE` — NOT a bug (corrected)
+
+An earlier draft of this audit claimed `VITE_KORA_MODE` was set nowhere and every build shipped `koraMode = "test"`. **That was wrong** — it is set in Configurations as `live`, matching server-side `KORA_MODE = live`. Client and server agree. No build-flag defect.
+
+The **Dockerfile change is still required**, because `VITE_*` vars are inlined by Vite at `npm run build` and Render's runtime environment cannot reach them:
+
+```dockerfile
+ARG VITE_KORA_MODE
+ARG VITE_POSTHOG_KEY
+ENV VITE_KORA_MODE=$VITE_KORA_MODE \
+    VITE_POSTHOG_KEY=$VITE_POSTHOG_KEY
+RUN NODE_ENV=production npm run build
+```
+
+Same class as the `NODE_ENV=development` dev-bundle bug already fixed at Dockerfile line 25.
+
+### Configurations — port list
+
+| Variable | Value on Replit | Cutover action |
+|---|---|---|
+| `CRON_LEADER` | `1` | **MUST SET on Render** — see above |
+| `VITE_KORA_MODE` | `live` | **Build arg** |
+| `KORA_MODE` | `live` | Set |
+| `KORA_PAYMENTS_ENABLED` | `true` | Set |
+| `KORA_PAYOUTS_ENABLED` | `false` | Set |
+| `KORA_DEPOSIT_ROLLOUT_PERCENT` | `0` | Set — deliberate 0 |
+| `KORA_PAYOUT_ROLLOUT_PERCENT` | `45` | Set |
+| `KORA_INTERNAL_USER_IDS` | one UUID | Set |
+| `KORA_NOTIFICATION_URL` | `https://kasiro.app/api/webhooks/kora` | Set — already points at kasiro.app, correct post-DNS |
+| `KORA_REDIRECT_URL` | `https://kasiro.app/wallet/payment-result` | Set — same |
+| `KORA_DAILY_DEPOSIT_LIMIT_NGN` / `_WITHDRAWAL_` | `150000` | Set |
+| `KORA_MAX_DEPOSIT_NGN` / `KORA_MAX_WITHDRAWAL_NGN` | `50000` | Set |
+| `ALERT_EMAILS_ENABLED` | `true` | Set |
+| `USE_LIST_PUBLIC_MARKETS` | `true` | Set |
+| `PLAY_DEMO_ENABLED` | `true` | Decide |
+| `NODE_OPTIONS` | `--enable-source-maps` | Optional |
+| `ALLOWED_ORIGINS` | `https://predicto-build.replit.app` | **Do NOT port as-is** — stale Replit dev URL. Use `https://kasiro.app`. Works today only because `APP_URL` separately allowlists the real domain. |
+| `RUN_STARTUP_MIGRATIONS` | `1` | **DEAD CONFIG — do not port.** `index.ts:322-324`: flag removed; migrations run only via the deploy build step (`docs/RUNBOOK-DEPLOY.md`). |
+
+**The pattern: every dangerous omission fails silently.** The app boots green, pages render, and one money path is dead with nothing surfaced. That is why this audit belongs before the freeze, not during it.
+
+### ⚠️ Build-time, not runtime — `VITE_*`
+
+`VITE_KORA_MODE` and `VITE_POSTHOG_KEY` are read via `import.meta.env` and inlined by Vite at `npm run build`. **Setting them in Render's runtime environment does nothing.**
+
+`VITE_KORA_MODE` is currently set **NOWHERE** — not Secrets, not Configurations, not `.env`, not the Dockerfile, not `vite.config`. Every build ships `koraMode = "test"` (`client/src/lib/kora-checkout.ts:19-26`, fail-closed unless the value is exactly `"live"`).
+
+Consequence depends on the server key:
+- `KORA_SECRET_KEY = sk_test_…` → consistent, nothing real moving, no bug.
+- `KORA_SECRET_KEY = sk_live_…` → **live bug**: server mints `checkout.korapay.com`, client accepts only `test-checkout.korapay.com`, so every Naira deposit fails at the final step for the 45% cohort. Presents as a Kora fault, is actually a build flag.
+
+**Dockerfile change required either way** — it currently has no `ARG` for any `VITE_` var:
+
+```dockerfile
+ARG VITE_KORA_MODE
+ARG VITE_POSTHOG_KEY
+ENV VITE_KORA_MODE=$VITE_KORA_MODE \
+    VITE_POSTHOG_KEY=$VITE_POSTHOG_KEY
+RUN NODE_ENV=production npm run build
+```
+
+Same class as the `NODE_ENV=development` dev-bundle bug already fixed at Dockerfile line 25.
+
+### ⚠️ `PLAY_PHONE_ENC_KEY` is an encryption key, not a credential
+
+`shared/schema.ts:1553` — `encrypted_phone = AES-256-GCM(msisdn, PLAY_PHONE_ENC_KEY)`, 32 bytes (64 hex chars). **If it changes, every encrypted phone number becomes permanently unreadable.** Carry it over byte-exact and back it up in Bitwarden before touching anything.
+
+### Missing from Render — 25
+
+| Variable | Breaks if missing | Action |
+|---|---|---|
+| `TRONGRID_API_KEY` | USDT deposits — address issuance AND detection | **Cutover** |
+| `KORA_PUBLIC_KEY` / `KORA_SECRET_KEY` | Naira deposits (live, 45% rollout) | **Cutover** |
+| `VITE_KORA_MODE` | Kora silently falls back to test mode | **Build arg** |
+| `PLAY_PHONE_ENC_KEY` | Encrypted phone data unreadable — irreversible | **Cutover, exact** |
+| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | Google sign-in dead — Google-registered users locked out | **Cutover** |
+| `APP_URL` | OAuth callback + CORS root domain | **Cutover** = `https://kasiro.app` |
+| `RESEND_API_KEY` / `RESEND_FROM_EMAIL` | All email, incl. **password reset** | **Cutover** |
+| `TATUM_API_KEY` | `isDemoMode()` true; webhook HMAC fails (`tatum.ts:70,179`) | Verify scope |
+| `TRON_DEPOSIT_ADDRESS` | Not referenced in code — confirm dead | Verify |
+| `TELEGRAM_BOT_TOKEN` + `TELEGRAM_WEBHOOK_SECRET` + `TELEGRAM_CHANNEL_ID` | All-or-nothing: token without secret **blocks boot** | Deliberate |
+| `WHATSAPP_TOKEN` / `_PHONE_ID` / `_BUSINESS_ACCOUNT_ID` | WhatsApp (still open) | Deliberate |
+| `PLAY_DEMO_ENABLED` / `PLAY_SMS_ENABLED` | Feature flags | Decide |
+| `FOOTBALL_DATA_API_KEY` | Football seeding skips — degrades gracefully | Low |
+| `AI_INTEGRATIONS_ANTHROPIC_API_KEY` / `_BASE_URL` | AI feature | Low |
+| `VITE_POSTHOG_KEY` | Analytics console-only | **Build arg**, low |
+| `CRON_LEADER` | Already deliberate (no workers) | Deliberate |
+| `NEW_NEON_URL` | Migration artifact, not app config | Ignore |
 
 ---
 
