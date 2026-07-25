@@ -1,6 +1,39 @@
 # SEV1 — Inverted AMM pricing + round-trip arbitrage
 
-**Status:** OPEN · **Found:** 2026-07-25 · **Scope:** AMM binary markets only (parimutuel unaffected)
+**Status: RESOLVED — verified live on production 2026-07-25** · **Found:** 2026-07-25 · **Scope:** AMM binary markets only (parimutuel tracked in `SEV2-parimutuel-rake-convention.md`)
+
+## RESOLUTION — verified against `POST /api/markets/:id/quote` on kasiro.app
+
+Fixed in two passes. Pass 1 (`c00f743`): `amm.ts` quadratics + `amm-buy.ts` / `amm-sell.ts` switched to the helpers. Pass 2 (`16137bc`): the four call sites pass 1 missed — `routes/markets.ts` quote handler (sell formula, pool updates, liquidity bound), `bot/execute-trade.ts` `sharesFromCost`, and the client Max button in `market.tsx`.
+
+Live verification on the Davido market (pools 34.037/63.212, quoted YES 0.65):
+
+```
+                pricePerShare      price after        direction
+BUY  YES 0.001   0.6500023   →  yesPrice 0.6500047    ✓ rises
+SELL YES 0.001   0.6499977   →  yesPrice 0.6499953    ✓ falls
+BUY  NO  0.001   0.3500023   →  noPrice  0.3500047    ✓ rises
+SELL NO  0.001   0.3499977   →  noPrice  0.3499953    ✓ falls
+```
+
+- **Marginal cost equals quoted price** on both sides (was 0.5385 buy / 1.8571 sell).
+- **Round trip closed:** buy 0.00065000 vs sell 0.00064999 before fees. Was +235% per round trip.
+- **Price impact correct:** 5-share buy quotes 0.6615/share vs 0.65 spot — larger orders now cost more, not less. Independently checked against the quadratic: `c = (98.86379 − 92.248717)/2 = 3.30754` vs API `3.3075621`. Exact.
+- **Quote/execution divergence impossible by construction:** `handleQuote` and the trade path both call `poolsAfterBuy`/`poolsAfterSell`. One implementation, not two that agree by coincidence.
+
+### Deployment lesson worth keeping
+
+After pass 2, Render (auto-deploys from GitHub `main`) was correct while kasiro.app still served the old build — Replit needs a **manual republish**. That left production in the worst intermediate state: `amm.ts` fixed so execution priced correctly, but the quote handler old, so every web sell hard-failed on the `minProceeds` slippage guard. **Two hosts, two deploy mechanisms — verify both, always.**
+
+### Still unverified
+
+The client **Max button** (`market.tsx:254,304`) ships in the JS bundle and cannot be checked by API probe. Click Max on a live market and confirm the filled share count is affordable.
+
+---
+
+**Original report follows.**
+
+**Scope:** AMM binary markets only (parimutuel unaffected)
 
 **Severity downgraded SEV0 → SEV1 on 2026-07-25.** Operator confirmed **no real users and no real trades**. The 18 users, 335 trades and $11,060.22 balance visible in the database are the operator's own test activity. No user has been financially harmed, so no refund, clawback or reconciliation work is required.
 
