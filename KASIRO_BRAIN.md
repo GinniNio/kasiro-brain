@@ -110,7 +110,8 @@ Run `/eng phase-spec --spec "shared state tables"` to generate the Replit implem
 ## What Is Dead / Archived
 
 - Predicto 1 (Supabase/Vercel) — shut down 2026-04-03 per ADR-001
-- OneDrive Predicto folder — dead workspace; read-only archive
+- OneDrive Predicto folder — dead **as a code workspace**. Retains historical strategy docs and market slates as reference. **EXCEPTION: `kasiro-brain/` lives here deliberately** — it is the working copy of `github.com/GinniNio/kasiro-brain` and is fully live. GitHub, not OneDrive, provides its any-machine/any-agent portability.
+- `_archive/predicto-1-era/` (in the OneDrive Predicto folder) — three stale `CLAUDE*.md` variants + a stale root `replit.md`, all Predicto 1 era, quarantined 2026-07-25 so agents stop loading them as current context. The live pointer is the 233-byte `CLAUDE.md` at that folder's root, which redirects to `C:\Dev\Kasiro\replit.md`.
 - Prolego2 OneDrive folder — dead; Predicto 1 era artifacts only
 - Niche daily scan — retired 2026-05-07; scrape scripts never returned to repo
 - M2 Obi market (id: d5747991) — resolved NO; Obi resigned from ADC 2026-05-03
