@@ -115,12 +115,14 @@ Remaining truth: Render is running **dev data with a dev HD wallet seed**. It is
 
 ### 1. Harden Neon before any prod data touches it
 
-Free tier gives only **6 hours** of PITR. Do this *now*, not at cutover:
+Free tier gives only **6 hours** of PITR. Do this *before* the prod restore, not at cutover:
 
-- Free → **Launch** plan
-- **PITR → 7 days**
-- **Disable scale-to-zero** (cold starts also make Render health checks flap)
-- Min compute **0.25 CU**
+- [x] Free → **Launch** plan — **DONE 2026-07-25**
+- [ ] **PITR / history retention → 7 days** (Launch permits up to 7d but does not default to it)
+- [ ] **Disable scale-to-zero** (cold starts also make Render `/api/health` checks flap)
+- [ ] Min compute **0.25 CU**
+
+Plan upgrade alone does not apply the three settings below it — they are separate compute toggles and must be set explicitly.
 
 Cost ~$20–80/mo.
 
@@ -299,6 +301,33 @@ If behind as well, prefer `git pull --rebase origin main` — this repo is a lin
 `DATABASE_URL` (own Neon direct URL), `SESSION_SECRET`, `PLATFORM_USER_ID`, `CRON_SECRET`, `MONITOR_TOKEN`, `HD_WALLET_MASTER_SEED` (**dev/test seed — NOT prod**).
 
 Deliberately unset: `CRON_LEADER` (no workers), `TELEGRAM_BOT_TOKEN` (would block boot without webhook secret), `ADMIN_EMAILS` (admin routes 403 until set). Kora disabled.
+
+### ⚠️ CORS — accidentally unset, broke ALL writes (found 2026-07-25)
+
+`ALLOWED_ORIGINS` and `APP_URL` were both unset on Render. `server/app.ts` builds its allowlist from those two vars, so in production the allowlist was **empty** and `app.ts:242` threw `Error: Not allowed by CORS` for any request carrying an `Origin` header.
+
+**Symptom:** every POST returned `500 {"error":"internal_server_error"}` while the whole site looked healthy. Registration, login, trading, deposit and withdrawal were all dead.
+
+**Why reads still worked:** browsers omit `Origin` on same-origin GETs, and `app.ts:228` (`if (!origin) return cb(null, true)`) waves those through. Chrome *does* send `Origin` on same-origin POSTs.
+
+**Proof:**
+
+```
+POST /api/auth/register  WITH Origin header → 500 {"error":"internal_server_error"}
+POST /api/auth/register  NO   Origin header → 400 {"message":"Required"}   (validation reached)
+```
+
+**Fix now:**
+
+```
+ALLOWED_ORIGINS=https://kasiro-prod.onrender.com
+```
+
+Prefer `ALLOWED_ORIGINS` over `APP_URL` here — `APP_URL` also feeds `APP_ROOT_DOMAIN` and the passport OAuth `baseURL`, so pointing it at a temporary Render hostname has unwanted side effects.
+
+**At cutover:** set `APP_URL=https://kasiro.app`. `ALLOWED_SUBDOMAINS` is `["www","play"]`, so `www.kasiro.app` is already allowlisted (still NXDOMAIN in DNS).
+
+**Lesson:** production has `APP_URL` set, which is why signup works on kasiro.app. This was a pure env gap in the new deployment — it would have taken the front door down on cutover day. Audit the full env var list against production before cutover, not just the ones on the checklist.
 
 ---
 
