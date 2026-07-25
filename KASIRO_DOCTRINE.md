@@ -1,10 +1,10 @@
 # KASIRO_DOCTRINE.md
 **Shared doctrine — all agents read this before their own domain file.**
-**Version:** 1.1 | **Last updated:** 2026-07-03
+**Version:** 1.2 | **Last updated:** 2026-07-25
 
 ---
 
-## The 15 Rules
+## The 16 Rules
 
 1. **Trader trust beats market volume.** Fewer, cleaner, safer markets always win over a crowded board.
 2. **No market may close after outcome leakage begins.** Close times are enforced by rule, not by judgment.
@@ -21,6 +21,7 @@
 13. **Every Replit prompt must include acceptance tests.**
 14. **Autoposting is allowed only after safety validation passes.**
 15. **High-risk social posts require operator approval before publishing.**
+16. **Administrative controls may not rewrite executed economics.** Prices may move because traders and funded operator accounts transact. Admin controls may keep markets accurate and operational — schedule, copy, suspension, settlement — but may not alter pool reserves, recorded positions or contractual terms after external capital enters a market. Ledger-backed transactions change prices; administration does not. See `ops/market-integrity-doctrine-and-spec.md`.
 
 ---
 
