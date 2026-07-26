@@ -55,7 +55,13 @@ Principal intact ≠ bargain intact.
 
 ---
 
-## 2. IMMEDIATE — before cutover
+## 2. IMMEDIATE — before cutover ✅ DONE 2026-07-26 (commit `1682092`)
+
+Shipped as specified: single transaction, market row locked first via `SELECT … FOR UPDATE`, all guards evaluated against the locked row, `total_trades` read from that same SELECT, write on the same client, `ROLLBACK` on every early return, `client.release()` in `finally`. `storage.getMarket` / `storage.updateMarket` removed from the handler. Optional `reason` accepted and logged; not required, so the existing admin button still works. All seven acceptance criteria below verified by code review.
+
+**Consequence:** with reprice restricted to zero-trade markets, rule 16 is effectively enforced on the AMM side already — `poolsFromPrice` still changes `k`, but no positions exist to be affected. §3 replaces the interim `total_trades` guard with `external_trading_started_at`, which restores repricing on operator-only markets.
+
+*Original specification retained below.*
 
 ### `adjust-price` is a pre-existing concurrency defect, tracked separately from governance
 

@@ -12,15 +12,15 @@ _Last updated: 25 July 2026 (end of session). Give this file to a fresh Claude C
 
 1. **Smoke-test the Naira withdrawal path.** Payouts were enabled and verified live on 25 Jul, closing the one-way door — but request-to-money-landed has never been exercised. Use the operator account and a small amount. Bank payouts run through manual admin approval, so there is a human gate, but the flow is untested. Note the remaining asymmetry: deposits at 100% rollout, payouts at 45%.
 
-2. **Lock or disable `adjust-price` — this one has a deadline.** `handleAdminAdjustPrice` (`server/routes/admin-markets.ts:883`) does an **unlocked** pool-state write: no `BEGIN`, no `FOR UPDATE`. It can overwrite a concurrent trade's result (lost update). This is a defect **today**, not a governance question, and it must not travel through the cutover unguarded. Interim fix and its acceptance criteria: `market-integrity-doctrine-and-spec.md` §2.
+2. **Dockerfile: add `ARG`/`ENV` for the `VITE_*` vars** before `npm run build`. Without it, `VITE_KORA_MODE=live` cannot reach the Render build and Kora checkout silently falls back to test mode. Exact snippet in the env audit section.
 
-3. **Dockerfile: add `ARG`/`ENV` for the `VITE_*` vars** before `npm run build`. Without it, `VITE_KORA_MODE=live` cannot reach the Render build and Kora checkout silently falls back to test mode. Exact snippet in the env audit section.
+3. **Prompt 13: switch the dump to `--format=custom`** so the restore can use `pg_restore -j`. Shortens the freeze window, which now has a real cost.
 
-4. **Prompt 13: switch the dump to `--format=custom`** so the restore can use `pg_restore -j`. Shortens the freeze window, which now has a real cost.
+4. **Add a seed-validity assertion** before the HD wallet swap. `Buffer.from(seed,"hex")` accepts malformed input and derives a wrong-but-plausible address set with no error.
 
-5. **Add a seed-validity assertion** before the HD wallet swap. `Buffer.from(seed,"hex")` accepts malformed input and derives a wrong-but-plausible address set with no error.
+5. **Confirm CI is green on `main`** — outstanding since the 07-19 push (6 failing tests, fix dispatched, never reconfirmed).
 
-6. **Confirm CI is green on `main`** — outstanding since the 07-19 push (6 failing tests, fix dispatched, never reconfirmed).
+> ✅ **`adjust-price` containment — DONE 26 Jul** (commit `1682092`). Was the one pre-cutover item with a deadline. See "Closed items" below.
 
 **Then the cutover** (§ "Immediate next actions" → step 3). Now needs a maintenance window and a user notice, because real Naira is flowing.
 
@@ -43,6 +43,19 @@ _Last updated: 25 July 2026 (end of session). Give this file to a fresh Claude C
 | `SEV1-amm-pricing-replit-prompt.md` | AMM pricing inversion — RESOLVED, with live verification and the deploy lesson |
 | `SEV2-parimutuel-rake-convention.md` | Rake-on-losses, shared calculator, operator seeding by weight |
 | `market-integrity-doctrine-and-spec.md` | Rule 16, `adjust-price` containment, protection-state build, acceptance test matrix |
+
+**Closed items — `adjust-price` containment (26 Jul, commit `1682092`)**
+
+`handleAdminAdjustPrice` was doing a read-modify-write across **two separate connections** (`storage.getMarket` then `storage.updateMarket`) with nothing holding the market row in between — a concurrent trade committing in that window was silently overwritten. Now a single transaction: `pool.connect()` → `BEGIN` → `SELECT … FOR UPDATE` on the market row → all guards evaluated against the locked row → write on the same client → `COMMIT`, with `ROLLBACK` on every early return and `client.release()` in `finally`.
+
+Interim guard added: `total_trades > 0` → `409 MARKET_HAS_TRADES`. Deliberately **stricter than final policy** — it counts operator trades too. Post-cutover this is replaced by `external_trading_started_at IS NOT NULL`, at which point operator-only markets become repriceable again (`market-integrity-doctrine-and-spec.md` §3).
+
+Two properties worth remembering:
+
+- `total_trades` is read **from the locked SELECT**, not a second query, so there is no window between the lock and the check.
+- The trade path increments `total_trades` inside the same transaction that holds the market lock (`server/trades/amm-buy.ts:173`), so the two paths genuinely serialise.
+
+**Side effect: doctrine rule 16 is now effectively enforced on the AMM side.** `poolsFromPrice` still changes `k` (see spec §1), but with reprice restricted to zero-trade markets there are no positions whose exit price could move. The guard was aimed at the concurrency defect and closed the governance hole as a consequence.
 
 **Fixed 25–26 Jul, recorded because the mechanism recurs:**
 
