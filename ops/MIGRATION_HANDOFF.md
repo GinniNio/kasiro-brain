@@ -10,7 +10,7 @@ _Last updated: 25 July 2026 (end of session). Give this file to a fresh Claude C
 
 **Do these first, in this order. None require a freeze.**
 
-1. **Decide the Kora deposit question — this is live and outstanding.** Deposits went to **100%** rollout on 25 Jul while `KORA_PAYOUTS_ENABLED = false`. Naira in, no Naira out. Either enable payouts or pull deposits back to a low percentage; use `KORA_INTERNAL_USER_IDS` for testing (it bypasses the rollout gate). See "Kora — deposits opened to 100%" below. **This is a product/trust decision, not an engineering task, and it blocks nothing technically — but it is the highest-stakes open item.**
+1. **Smoke-test the Naira withdrawal path.** Payouts were enabled and verified live on 25 Jul, closing the one-way door — but request-to-money-landed has never been exercised. Use the operator account and a small amount. Bank payouts run through manual admin approval, so there is a human gate, but the flow is untested. Note the remaining asymmetry: deposits at 100% rollout, payouts at 45%.
 
 2. **Lock or disable `adjust-price` — this one has a deadline.** `handleAdminAdjustPrice` (`server/routes/admin-markets.ts:883`) does an **unlocked** pool-state write: no `BEGIN`, no `FOR UPDATE`. It can overwrite a concurrent trade's result (lost update). This is a defect **today**, not a governance question, and it must not travel through the cutover unguarded. Interim fix and its acceptance criteria: `market-integrity-doctrine-and-spec.md` §2.
 
@@ -439,11 +439,19 @@ Verified live: `GET https://kasiro.app/api/payments/config` → `koraPaymentsEna
 
 **Documentation correction:** earlier text here and in memory claimed *"deposits live at 45% rollout, payouts still off"*. The 45% was always on **payouts**, which are disabled. Deposits were at **0**, and are now at **100**.
 
-#### ⚠️ Deposits open, payouts closed — one-way door
+#### ✅ RESOLVED 2026-07-25 — payouts enabled, one-way door closed
 
-There is a technical exit: a Kora NGN deposit clears `is_demo` (`server/services/ngn-payments.ts:770`), unlocking USDT withdrawal to a TRC-20 address. But that requires a Tron wallet. A Naira-first user who deposited ₦5,000 by bank transfer has no practical way to withdraw in Naira while `KORA_PAYOUTS_ENABLED = false`.
+`KORA_PAYOUTS_ENABLED` set to `true` and the deployment republished. Verified live:
+`GET https://kasiro.app/api/payments/config` → `koraPaymentsEnabled: true, koraPayoutsEnabled: true`, with `/api/health` and `/api/markets` both 200.
 
-Doctrine rule 1 (trader trust) argues for either enabling payouts alongside, or holding deposits at a low rollout until they are. Note `KORA_INTERNAL_USER_IDS` bypasses the rollout gate, so end-to-end testing does not require exposing real users. Regulatory implications in Nigeria are out of scope here and need proper advice.
+The clean boot also confirms `KORA_SECRET_KEY` is a **live-mode** key: `validateKeyModeConsistency(secretKey, mode)` runs whenever either rail is active, so a `sk_test_` key against `KORA_MODE = live` would throw.
+
+**Republish gotcha, recorded for next time:** `getKoraConfig()` calls `buildKoraConfig()` on every request (no memoisation), so it reads `process.env` fresh — but a Replit **Configurations** change does not mutate the environment of an already-running deployment. Config edits require a **republish** to take effect. Enabling a rail also activates `validateKeyModeConsistency`, and because the config is rebuilt per request rather than cached at boot, a mismatch surfaces as a **500 on every Kora request**, not a clean startup failure.
+
+#### Still open
+
+- **Rollout asymmetry:** `KORA_DEPOSIT_ROLLOUT_PERCENT = 100` vs `KORA_PAYOUT_ROLLOUT_PERCENT = 45`. Everyone can deposit; fewer than half can withdraw. Much better than a closed door, still not symmetric.
+- **The withdrawal path has never been smoke-tested end to end.** Testing deliberately stopped short of submitting a withdrawal. Bank payouts run through manual admin approval (`/api/admin/withdrawals/bank/:id/approve` → `/execute`), so there is a human gate, but request-to-money-landed is unexercised. Do it with the operator account and a small amount before anyone else's payout arrives.
 
 #### ⚠️ This raises cutover risk materially
 
