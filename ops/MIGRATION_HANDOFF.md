@@ -44,6 +44,13 @@ _Last updated: 25 July 2026 (end of session). Give this file to a fresh Claude C
 | `SEV2-parimutuel-rake-convention.md` | Rake-on-losses, shared calculator, operator seeding by weight |
 | `market-integrity-doctrine-and-spec.md` | Rule 16, `adjust-price` containment, protection-state build, acceptance test matrix |
 
+**Fixed 25–26 Jul, recorded because the mechanism recurs:**
+
+- **Stale-chunk failures after every deploy.** `index.html` was served with `maxAge: "1h"`, so a returning user held a pre-deploy shell referencing content-hashed chunk URLs that no longer existed → `lazy()` import rejects → `RouteErrorBoundary` → "Something went wrong". Compounded by a service worker caching navigations under a **static** `CACHE_NAME`, which meant `activate` never purged the old shell. Fixed: `no-cache, no-store, must-revalidate` on `/`, `/admin` and `/sw.js`; `CACHE_NAME` now build-derived; `skipWaiting()` + `clients.claim()`. Verified live. **Note the SPA fallback (`res.sendFile`) is a different code path from `express.static` — both needed the header.**
+- **`<SelectItem value="">` in `CreateMarketForm.tsx:1392`.** Radix reserves `""` for "no selection", so the create-market page threw on mount. Surfaced now because `"@radix-ui/react-select": "^2.1.7"` is a caret range and the Docker `npm ci` work pulled a stricter 2.x — the code didn't change, the library did. Fixed with a `__none__` sentinel translated at the boundary so `competitionId` keeps `""` semantics. Only instance in the client.
+
+**Open — worth a small change:** `RouteErrorBoundary` shows "Something went wrong" with no error identity. Two unrelated bugs (stale chunk, then the Radix throw) presented identically and cost a deploy cycle to tell apart. The boundary already holds the error object; surfacing the error name or a short code, even in small text, would have made the second diagnosis immediate.
+
 **Known-open, not blocking cutover:** price formatters mislabel currency in two places (`₦65` for a ₦890 share price; `$100.00` for a ₦100 minimum) — one focused pass, worth doing before real volume. `/dev/pool-layouts` still hardcodes rake-on-total. One production market still has a `NULL proposition_fingerprint`, invisible to the duplicate gate. Unknown `/api/*` paths return HTML instead of a JSON 404. CSP still allows `connect-src https://api.anthropic.com`.
 
 ---
