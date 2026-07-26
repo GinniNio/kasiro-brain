@@ -12,15 +12,19 @@ _Last updated: 25 July 2026 (end of session). Give this file to a fresh Claude C
 
 1. **Decide the Kora deposit question — this is live and outstanding.** Deposits went to **100%** rollout on 25 Jul while `KORA_PAYOUTS_ENABLED = false`. Naira in, no Naira out. Either enable payouts or pull deposits back to a low percentage; use `KORA_INTERNAL_USER_IDS` for testing (it bypasses the rollout gate). See "Kora — deposits opened to 100%" below. **This is a product/trust decision, not an engineering task, and it blocks nothing technically — but it is the highest-stakes open item.**
 
-2. **Dockerfile: add `ARG`/`ENV` for the `VITE_*` vars** before `npm run build`. Without it, `VITE_KORA_MODE=live` cannot reach the Render build and Kora checkout silently falls back to test mode. Exact snippet in the env audit section.
+2. **Lock or disable `adjust-price` — this one has a deadline.** `handleAdminAdjustPrice` (`server/routes/admin-markets.ts:883`) does an **unlocked** pool-state write: no `BEGIN`, no `FOR UPDATE`. It can overwrite a concurrent trade's result (lost update). This is a defect **today**, not a governance question, and it must not travel through the cutover unguarded. Interim fix and its acceptance criteria: `market-integrity-doctrine-and-spec.md` §2.
 
-3. **Prompt 13: switch the dump to `--format=custom`** so the restore can use `pg_restore -j`. Shortens the freeze window, which now has a real cost.
+3. **Dockerfile: add `ARG`/`ENV` for the `VITE_*` vars** before `npm run build`. Without it, `VITE_KORA_MODE=live` cannot reach the Render build and Kora checkout silently falls back to test mode. Exact snippet in the env audit section.
 
-4. **Add a seed-validity assertion** before the HD wallet swap. `Buffer.from(seed,"hex")` accepts malformed input and derives a wrong-but-plausible address set with no error.
+4. **Prompt 13: switch the dump to `--format=custom`** so the restore can use `pg_restore -j`. Shortens the freeze window, which now has a real cost.
 
-5. **Confirm CI is green on `main`** — outstanding since the 07-19 push (6 failing tests, fix dispatched, never reconfirmed).
+5. **Add a seed-validity assertion** before the HD wallet swap. `Buffer.from(seed,"hex")` accepts malformed input and derives a wrong-but-plausible address set with no error.
+
+6. **Confirm CI is green on `main`** — outstanding since the 07-19 push (6 failing tests, fix dispatched, never reconfirmed).
 
 **Then the cutover** (§ "Immediate next actions" → step 3). Now needs a maintenance window and a user notice, because real Naira is flowing.
+
+**Queued for immediately AFTER cutover — do not start before it.** `market-integrity-doctrine-and-spec.md` §3: the `external_trading_started_at` marker, its DB trigger, the production backfill, market-row locks and the admin guards, shipped as **one release**, then reconciliation, then admin financial controls restored. Held until after the move because items 1–3 of that build touch the trade transaction, which is the last code that should change in the same week as a host migration.
 
 **The three things most likely to bite, all silent failures:**
 
@@ -30,7 +34,15 @@ _Last updated: 25 July 2026 (end of session). Give this file to a fresh Claude C
 | `TRONGRID_API_KEY` | Unset = deposit addresses 503, no issuance and no detection |
 | Prod `HD_WALLET_MASTER_SEED` | Wrong = user funds route to addresses Kaye does not control |
 
-**Session log for 25 Jul:** fixed the static-asset blocker; found and fixed a CORS gap that had killed every write path; ran the full smoke test; found, diagnosed and verified the fix for the AMM pricing inversion (SEV1, now RESOLVED — see `SEV1-amm-pricing-replit-prompt.md`); specified and shipped the parimutuel rake-convention fix (SEV2 — see `SEV2-parimutuel-rake-convention.md`); completed the env parity audit (45 vars missing on Render).
+**Session log for 25 Jul:** fixed the static-asset blocker; found and fixed a CORS gap that had killed every write path; ran the full smoke test (read + write, including a real trade); found, diagnosed and verified the fix for the AMM pricing inversion (SEV1, now RESOLVED — see `SEV1-amm-pricing-replit-prompt.md`); specified and shipped the parimutuel rake-convention fix (SEV2 — see `SEV2-parimutuel-rake-convention.md`); completed the env parity audit (45 vars missing on Render); adopted doctrine rule 16 and wrote `market-integrity-doctrine-and-spec.md`.
+
+**Companion docs in this folder:**
+
+| File | What it carries |
+|---|---|
+| `SEV1-amm-pricing-replit-prompt.md` | AMM pricing inversion — RESOLVED, with live verification and the deploy lesson |
+| `SEV2-parimutuel-rake-convention.md` | Rake-on-losses, shared calculator, operator seeding by weight |
+| `market-integrity-doctrine-and-spec.md` | Rule 16, `adjust-price` containment, protection-state build, acceptance test matrix |
 
 **Known-open, not blocking cutover:** price formatters mislabel currency in two places (`₦65` for a ₦890 share price; `$100.00` for a ₦100 minimum) — one focused pass, worth doing before real volume. `/dev/pool-layouts` still hardcodes rake-on-total. One production market still has a `NULL proposition_fingerprint`, invisible to the duplicate gate. Unknown `/api/*` paths return HTML instead of a JSON 404. CSP still allows `connect-src https://api.anthropic.com`.
 
