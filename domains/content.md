@@ -197,6 +197,18 @@ Winning return: [%]x
 ## Key Learnings Accumulated
 *(Appended by Marketing agent after sessions)*
 
+
+### 2026-07-27 — Social distribution reset
+
+- **Kasiro creates the signal; existing audiences carry it.** Owned accounts remain the trusted probability desk. Market-specific creators, sports/culture pages, and manually seeded communities are the primary distribution tests.
+- **Default effort mix:** creator/topic pages 40%; original probability content 25%; manual WhatsApp/Telegram seeding 20%; relevant community interaction 10%; reply hunting 5%. Telegram remains outside autoposting.
+- **Promote selectively.** A planned social market needs an existing community, defensible disagreement, enough circulation time, one-sentence framing, and a named public source.
+- **Build packages, not announcements.** One selected market can produce a probability card, factual tension caption, creator argument, opposing view, genuine movement update, and settlement receipt.
+- **Evidence standard:** track separate links by distributor and judge sessions, registrations, first deposits, and first trades. Impressions alone do not establish copy quality or channel ROI.
+- **Market-integrity language:** when `user_volume` and external trader activity are zero, AMM prices are opening prices and parimutuel percentages are opening-pool weights. Never call either trader sentiment. Publish movement only when real external trades caused it.
+- **Reply hunting status:** unproven. Use only where Kasiro adds a probability, source, correction, or useful fact. Generic link insertion ends.
+- **Competitor lesson:** copy Bayse's personality-led packaging and 2Sabi's short topical questions; keep Kasiro's source, pricing, and trust discipline. Payout or ROI claims require direct evidence.
+
 - X post format: no link in main body, no hashtags, double newlines, lead with text (instituted 2026-05-06)
 - Engagement is reactive to live markets — never generic social media content
 - Pidgin is a tool, not a requirement — use when natural
@@ -215,7 +227,7 @@ Winning return: [%]x
 ### 2026-07-22 — WAFCON + Glasgow launch wave
 
 - **Launch posts underperform reactive posts badly at this follower count.** WAFCON hero launch post got 13 views in 19h; the Jul 12 *reactive* Mbappé Golden Boot take got 117 views and the WC semis post 82. Pre-event launch copy has nothing to ride. Treat launch posts as necessary-but-low-yield, and put the real effort into reactive posts once an event is actually live. Revisit this after the Games/WAFCON start, when reactive material exists. (2026-07-22)
-- **Reply hunt out-earns organic posting by an order of magnitude at 7-ish followers** — replies went into threads with 300 and 25.1K views vs 13 views on our own post. Confirms the 2026-07-04 finding. Reply hunt should be the *primary* channel, not the follow-on.
+- **SUPERSEDED 2026-07-27:** The claim that reply hunting out-earned organic posting used parent-thread views as if they were impressions on Kasiro's replies. Exact observed reply views were 1, 1, and 15, with zero visible engagement. Parent-thread reach does not transfer automatically to a reply. Reply hunting is now capped as a small experiment until attributed traffic proves value.
 - **Re-check the traction of old reply-hunt candidates before discarding them for staleness.** A candidate logged at 1.2K views was still inside the 48h window 19h later and had grown to 25.1K views — far better than anything in the fresh search. Staleness ≠ low value; check current numbers.
 - **Do not reply-hunt into Davido/Wizkid stan-war threads.** A fresh ORIADÉ search returned almost entirely fan-war banter ("lead singles dey flop", "signs of shit album") at 1–29 views. Hostile territory, negligible reach, and inserting a market reads as taking a side. Filter for news/chart framing, not artist-vs-artist threads.
 - **Read the target thread's actual angle before drafting the reply.** The ORIADÉ thread was *critical* of Davido (song departing the top 100), not hype. The pre-drafted "momentum is real" opener would have read as tone-deaf; rewrote to a neutral "whichever way you read this" framing. Pre-drafted reply copy must be re-checked against the live thread before posting.
