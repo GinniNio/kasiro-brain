@@ -84,6 +84,54 @@ No post may be drafted without a declared objective.
 
 ---
 
+## Distribution Strategy
+
+Kasiro's owned accounts are the trusted source of market information, but they are not yet a meaningful distribution channel. Social execution must therefore separate **signal creation** from **audience distribution**.
+
+### Operating model
+
+1. **Kasiro is the probability desk.** Publish the market question, current probability or opening pool, verified change, closing time, and final settlement receipt.
+2. **Creators, topic pages, and communities carry the signal.** Build market-specific story packages for people and pages that already reach the relevant football, athletics, Afrobeats, creator, or public-affairs audience.
+3. **Select for social potential.** Promote only markets with an existing community, a defensible disagreement, enough circulation time, one-sentence framing, and a named public source.
+4. **One promoted market becomes a content package:** probability card, factual tension caption, one creator argument, one opposing view, one material movement update if genuine, and one settlement receipt.
+5. **Track distribution by channel.** Use distinct links and evaluate landing sessions, registrations, first deposits, and first trades. Impressions and parent-thread views are diagnostic metrics, not conversion evidence.
+
+### Default effort allocation
+
+| Activity | Share |
+|---|---:|
+| Creator and topic-page distribution | 40% |
+| Original probability content | 25% |
+| Manual WhatsApp and Telegram seeding tests | 20% |
+| Relevant community interaction | 10% |
+| Reply hunting | 5% |
+
+Telegram remains outside v1.1 autoposting. Its 20% allocation is manual distribution only.
+
+### Evidence rules
+
+- Parent-post or parent-thread views must never be reported as impressions on Kasiro's reply.
+- Reply hunting is unproven as a traffic channel. Keep it experimental until attributed clicks, registrations, deposits, or first trades demonstrate value.
+- Do not claim that copy, a creator, a page, or a channel works from impressions alone.
+- Do not describe AMM seed prices or parimutuel virtual seed weights as trader sentiment when external user activity is zero.
+- Probability movement content is allowed only when the movement is caused by real external trades and can be verified.
+- Paid shoutouts and creator posts are tests, not assumed high-ROI channels. Retain distributors based on qualified traffic.
+- Reply only when Kasiro adds a probability, source, correction, or useful factual angle. Generic link insertion is prohibited.
+
+### Social-market selection gate
+
+A market may receive planned social distribution only if all five pass:
+
+1. A relevant audience or community already exists.
+2. Both sides or outcomes have a credible argument.
+3. Enough time remains for content to circulate before outcome leakage.
+4. The question is clear in one sentence.
+5. Resolution uses a named public source.
+
+Passing this gate does not replace the No-Post Rules or Social Safety Validator.
+
+---
+
 ## No-Post Rules
 
 Marketing Brain must not promote a market if:
