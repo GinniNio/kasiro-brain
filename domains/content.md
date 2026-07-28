@@ -32,6 +32,70 @@ Kasiro speaks like a sharp, culturally fluent African — not a betting app, not
 
 ---
 
+## Kasiro Social Model — "probability newsroom" (operator strategy, 2026-07-27)
+
+**This is now the primary social doctrine. It supersedes the reply-hunt-as-primary-channel stance** (which was invalidated 2026-07-27 — see the correction entry in Key Learnings). Successful prediction brands turn live probabilities into content, then use creators and media pages to distribute it. Kasiro was producing posts but missing the second half.
+
+**Benchmark read (Bayse is the closest analogue — naira-funded prediction markets, same categories, same audience):**
+- **Bayse uses people as media.** A creator/celebrity/large stake becomes the story (e.g. Carter Efe's ₦2m Davido-Grammy position became third-party entertainment content), giving pages a reason to repost. It also builds markets around online behaviour (posts, views, likes — already have fan communities) and runs a "probability newsroom" (posts current odds on topical beefs like Portable vs Charles Okocha). Copy: markets around live fan communities; recruit a person to take a public position; the argument is the headline, probability beneath; give pages a ready-made package (image + caption + facts + tracked link); publish *real-trader* probability movement.
+- **2Sabi uses its own account as a promo feed.** Topical questions ("Who posts last? Predict. Win. Withdraw.") but no reason to share — same problem as Kasiro. Take only the good parts: short questions, fast reaction to trends, simple language, clear closing prompt. Do NOT copy 2Sabi's "ONLY licensed prediction market" claim — Kasiro makes only legally verified regulatory statements.
+- **Polymarket/Kalshi:** probability-as-live-information + KOL/creator "free agency" (borrowed audiences are the flywheel; brand account is secondary). Recruit several small topic-matched Nigerian pages *per market* before any expensive celebrity.
+
+**The model: behave like a small African probability newsroom.** Every post must do ≥1 of: (1) start an argument, (2) show what traders think now, (3) show opinion changed, (4) record whether the market was right, (5) give an existing community something worth sharing. A plain "new market is live" post does none well.
+
+**Five post types:**
+1. **Debate** — lead with the issue not the platform. *"Nigeria 48%. Kenya 31%. South Africa 14%. Are traders underrating Kenya in Glasgow?"* Clean probability card.
+2. **Movement** — *"Nigeria moved 35% → 47% after the team announcement. Genuine signal or national bias?"* ONLY real external-trader movement; internal seed-weight changes must never be described as sentiment (doctrine rule 3).
+3. **Creator prediction** — give a creator a specific question, they state their pick in their own voice: *"Ajibade wins POTT. I'm taking YES. What am I missing?"* Creator posts opinion + Kasiro card; Kasiro reposts; attribute traffic via a unique link.
+4. **Result receipt** — after settlement: *"Traders gave Nigeria 62%. Nigeria delivered. Settled from official CAF result."* **Post the misses too** — selective victory posts destroy trust once noticed.
+5. **Culture-responsive** — Davido/awards/creators/trending topics. Participation-first; don't force football language onto entertainment markets.
+
+**Format that combines Bayse distribution + Kasiro discipline:**
+> Carter says Davido takes it. Traders give him 38%.
+> Is the market underrating him?
+> Closes Tuesday, 8:00 PM WAT.
+
+**Platform roles (do NOT duplicate the same caption everywhere — reuse the fact, adapt the presentation):**
+- **X:** live probability movement, breaking developments, match commentary, interaction with journalists/analysts.
+- **Instagram:** strong cards, option-explainer carousels, creator Reels, settlement receipts.
+- **Threads:** conversational questions, culture markets, fewer links, more native discussion.
+- **TikTok/Reels:** creator reactions, quick opposing arguments, screen-recording explainers.
+- **WhatsApp/Telegram:** cards designed to be forwarded into existing groups. The *image itself* must carry question + probabilities + close time + Kasiro name (forwarded images lose captions).
+
+**Solo-operator weekly rhythm (one strong original/day + event updates; 10 weak posts won't beat a distribution gap):** Mon "markets to watch" carousel · Tue one contentious football/culture question · Wed creator/community prediction · Thu biggest probability movement · Fri weekend football card built for forwarding · match day: one pre-event post + only material live updates · post-settlement: result receipt with source.
+
+**Stop doing:** routine reply-hunting under big accounts (keep only replies that add a probability/source/genuinely useful fact); 8-outcome cards with payout explainers + multiple CTAs; posting every new market; "What do you think?"; unverified "breaking" language; fake winnings / staged trades / unconfirmable creator claims (Polymarket burned on fabricated-trade videos); uncontrolled affiliate posting (Kalshi purged affiliates over offensive posts — brand-safety risk).
+
+**Core principle (states the whole shift):** *Kasiro creates the signal; creators, pages and communities carry it.* The brand account is the trusted probability desk; distribution comes from audiences that already exist. Posting more from the brand account will not fix distribution.
+
+**Distribution layer — build three groups (start 5k–100k followers; topic fit + genuine engagement over follower count):**
+
+| Group | Role | Initial target |
+|---|---|---|
+| Micro-creators | Take positions and explain their choice | 5 |
+| Sports/culture pages | Publish supplied story packages | 5–10 |
+| Community admins | Forward cards into WhatsApp/Telegram groups | 5 |
+
+**Select markets for social potential (stop promoting every live market — a social market passes all four):** (1) involves a person/team/issue with an existing community; (2) both sides have a defensible argument; (3) open long enough for content to circulate; (4) outcome explainable in one sentence, resolved from a named public source. Prioritise: Nigerian football & African competitions; Afrobeats/creators/entertainment; major national economic decisions; social-media-behaviour markets with precise resolution; high-profile African achievements.
+
+**Every promoted market = one content package (turns one market into several posts, controlled operator load):** (1) one clean probability card; (2) one provocative factual caption; (3) one creator argument; (4) one opposing-view post; (5) one movement update *if real traders move the price*; (6) one settlement receipt; (7) one tracked link per distributor.
+
+**Revised social allocation (FINAL — supersedes the 10/20/30/40 mix in the 07-27 correction entry):**
+
+| Activity | Effort | Purpose |
+|---|---|---|
+| Creator & page distribution | 40% | Reach existing audiences |
+| Original probability content | 25% | Give distributors material worth carrying |
+| WhatsApp & Telegram seeding | 20% | Reach high-intent discussion groups |
+| Community interaction | 10% | Build relationships with relevant accounts |
+| Reply hunting | 5% | Presence only, where Kasiro adds a probability/source/correction/sharp fact. Generic link-dropping ends. |
+
+**First 30-day test:** one focused campaign across **four socially strong markets**. Per market: recruit one relevant creator/page; give them freedom to state their real opinion; supply a clean branded probability card; unique tracked link per distributor; Kasiro reposts. Record views → clicks → registrations → deposits → first trades. Fixed test budget; **do not pay on impressions alone** — flat fee per approved post + bonus for verified registrations/first traders, **subject to legal and platform-policy review**. After 30 days: keep distributors producing qualified traffic, drop impressions-only pages, identify best-converting category, concentrate next month on the two strongest creator-market combinations.
+
+**Dependencies before the paid test runs:** UTM/attribution infra (Product/Eng — flagged in Key Learnings) AND legal/platform-policy review of pay-per-registration incentives.
+
+---
+
 ## Channel Rules
 
 ### X (Twitter) — @kasiro_markets
@@ -197,6 +261,43 @@ Winning return: [%]x
 ## Key Learnings Accumulated
 *(Appended by Marketing agent after sessions)*
 
+### 2026-07-27/28 — First "probability desk" campaign (hero-market model in action)
+
+Ran the new model for real: pick socially strong markets, build content packages, post as opening pool/price (never trader sentiment), one UTM-less link (attribution still pending).
+
+- **Posted across all 3 owned channels — Nigeria vs Malawi (hero) + Davido ORIADÉ (secondary):** X (text post + link-in-first-reply), Threads (text + link), Instagram (deterministic card + caption). Cards generated by `outputs/make_social_cards.py` (4 reusable templates: debate / movement / result-receipt / culture, plus 3 hero cards). All framed opening pool/price; Nigeria-Malawi (75/16/9) and Davido (65/35) both verified `uniqueTraderCount: 0` / `userVolume: 0` in the API — **zero external stake, so "opening pool" is mandatory, never "traders think."** Sources named on card (CAF / TurnTable). No trade counts, volume, or payout claims.
+- **Stagger honoured partially:** hero first, Davido fired on operator cue. Amusan (opening price 60/40) and Oshoala are built/planned for tomorrow (match day) — a session cannot time-delay a post, so staggered posts wait for an operator cue or a scheduled task.
+- **Card-gen fixes worth keeping:** Poppins lacks → and ✓ glyphs — draw them as shapes (arrow = line+polygon; tick/cross = line segments), don't use unicode. Cards are native 1080×1350 (4:5); IG's default crop preserves them, just confirm 4:5.
+- **Ops incident:** a misfired profile-timeline reply click opened X's DM "Share" dialog and accidentally liked our own Davido post — caught and reverted. **Add link-replies from the post's own page (`/status/<id>`), not via the profile-timeline reply icon**, which is unreliable and adjacent to like/share controls.
+- **🔴 Market-integrity flag (operator action):** "South Africa qualify for 2027 WWC" (`96ba5a10`) was still `open`/`lockedAt: null` with its SA-vs-Tanzania match in live play (leakage-rule breach). `uniqueTraderCount: 0` so no external position was harmed, but it must be suspended in admin. Marketing cannot lock markets — escalated to operator/Eng.
+- **Do-not-promote list applied:** SA-WWC (leakage), Nigeria Group C finish (too similar to the Malawi hero same-day), Ajibade POTT (hold until after Nigeria's opener), Samukonga 400m (weaker Naija fit), CBN/Airtel/Osun (no event trigger today).
+
+### ⚠️ 2026-07-27 — CORRECTION: reply-hunt "reach" claims were invalid; distribution unproven
+
+**What was wrong.** Prior entries (2026-07-22, and the 07-23 conversion-playbook / destination-reply notes) claimed reply hunting "out-earns organic posting by an order of magnitude" and put Kasiro "in front of 25K-view threads." That used the **parent post's** view count as if it were the impression count on *our reply*. It is not. Those claims are invalidated.
+
+**Hard data (Jul 26 X reply-hunt batch, our replies' own impressions):**
+- @Remostars07 — 1 view · @GDangiwa — 1 · @Bleszonkaku (Davido) — 2 · @TrackTacticsHQ (Amusan) — 5 · @OwoSports1 (Glasgow) — 15
+- Total **24 impressions across 5 replies. Zero likes/replies/reposts on any. Zero attributed clicks/registrations** (no UTM in place).
+- Even the 991-view parent (@OwoSports1) fed our reply only 15 views (~1.5%); a 51-view parent fed 1.
+- Account baseline: **7 followers on X** (Threads account separately shows 1 — don't conflate them).
+
+**What is and isn't established.**
+- Established: parent-thread reach does NOT transfer to our replies; observed replies produced 1–15 views and zero visible engagement.
+- NOT established (do not claim): that reply hunting is "dead"; that ~7 followers is a hard ceiling; that "the copy is fine" (zero engagement + zero attribution is no evidence either way); any channel's *ROI ranking* — impressions alone can't rank channels. Paid shoutouts being "highest ROI" is a hypothesis, not a finding.
+
+**Defensible decision:** reply hunting is **unproven** for traffic. Reduce to a small experimental allocation until *attributed* clicks/registrations prove otherwise. Do not write "reply hunting is dead."
+
+**Distribution mix to test (operator-directed 2026-07-27):**
+- 10% reply hunting (kept small, experimental / presence only)
+- 20% standalone shareable posts + cards
+- 30% Telegram + WhatsApp tests with tracked links
+- 40% controlled paid-distribution tests, subject to platform-policy clearance
+- **Give each channel its own UTM link.** Judge on landing sessions → registrations → first deposits → first trades, NOT impressions. Kill any channel after a defined spend/effort threshold if it produces zero qualified actions.
+
+**Open item:** attribution infra (UTM links + a way to read landing sessions/registrations per source) is a prerequisite for any of the above to be measurable — flag to Product/Eng.
+
+
 - X post format: no link in main body, no hashtags, double newlines, lead with text (instituted 2026-05-06)
 - Engagement is reactive to live markets — never generic social media content
 - Pidgin is a tool, not a requirement — use when natural
@@ -215,7 +316,7 @@ Winning return: [%]x
 ### 2026-07-22 — WAFCON + Glasgow launch wave
 
 - **Launch posts underperform reactive posts badly at this follower count.** WAFCON hero launch post got 13 views in 19h; the Jul 12 *reactive* Mbappé Golden Boot take got 117 views and the WC semis post 82. Pre-event launch copy has nothing to ride. Treat launch posts as necessary-but-low-yield, and put the real effort into reactive posts once an event is actually live. Revisit this after the Games/WAFCON start, when reactive material exists. (2026-07-22)
-- **Reply hunt out-earns organic posting by an order of magnitude at 7-ish followers** — replies went into threads with 300 and 25.1K views vs 13 views on our own post. Confirms the 2026-07-04 finding. Reply hunt should be the *primary* channel, not the follow-on.
+- ~~**Reply hunt out-earns organic posting by an order of magnitude at 7-ish followers** — replies went into threads with 300 and 25.1K views vs 13 views on our own post. Reply hunt should be the *primary* channel.~~ **⚠️ INVALIDATED 2026-07-27 — see correction entry at top of Key Learnings.** This claim compared *parent-post* view counts to our reply's impressions as if they were the same metric. They are not. Verified reply-impression data (Jul 26 batch): our replies got 1–15 views each regardless of parent-thread size (a 991-view parent fed our reply 15). Parent-thread reach does NOT transfer to our reply.
 - **Re-check the traction of old reply-hunt candidates before discarding them for staleness.** A candidate logged at 1.2K views was still inside the 48h window 19h later and had grown to 25.1K views — far better than anything in the fresh search. Staleness ≠ low value; check current numbers.
 - **Do not reply-hunt into Davido/Wizkid stan-war threads.** A fresh ORIADÉ search returned almost entirely fan-war banter ("lead singles dey flop", "signs of shit album") at 1–29 views. Hostile territory, negligible reach, and inserting a market reads as taking a side. Filter for news/chart framing, not artist-vs-artist threads.
 - **Read the target thread's actual angle before drafting the reply.** The ORIADÉ thread was *critical* of Davido (song departing the top 100), not hype. The pre-drafted "momentum is real" opener would have read as tone-deaf; rewrote to a neutral "whichever way you read this" framing. Pre-drafted reply copy must be re-checked against the live thread before posting.
