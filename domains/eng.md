@@ -238,7 +238,46 @@ Full narrative and decisions: `C:\Dev\Kasiro\docs\handoffs\2026-07-19-kora-ngn-p
 ## Open Engineering Items
 *(Update after each Engineering agent session)*
 
-**Last Engineering session:** 2026-07-20
+**Last Engineering session:** 2026-07-31
+
+### 2026-07-31 — PRODUCTION CUTOVER EXECUTED (Render + own Neon) — Observe phase running
+
+Full cutover completed same day as prereqs, ~15:00–17:00 UTC (operator chose daytime window; edge-block freeze made it safe). Sequence: Cloudflare WAF block-all-except-operator → workers left running on Replit (CRON_LEADER removal never took effect — env source never found; accepted with sandwich check) → baseline captured → db-export ran clean on prod (pg_dump-in-image hypothesis TRUE, 1,218 KB dump) → sandwich second baseline identical → DROP SCHEMA + restore into own Neon via Replit workspace shell → validation matched baseline to six decimals (18 users, 10,981.781432 available, ledger 1,423/53,334.744946, 89 tables/13 enums/1 fn/1 trigger) → Render swapped to prod seed + PLATFORM_USER_ID → **seed verified by deposit-address equality across both hosts** (TTC2sdNh…) → CRON_LEADER=1 on Render, all 8 workers beating, ledger checkpoint continuous → domain verified + certs issued (needed temporary grey-cloud; Render verification is blocked by both proxy and the WAF rule) → DNS switched, TRUST_PROXY_HOPS=2 verified via /api/debug/ip returning real client IP → operator live trade reconciled exactly (wallet −0.168507 = ledger +0.168507) → maintenance rule deleted, restored notice posted.
+
+Fixes applied mid-cutover: `ADMIN_EMAILS=oebiefie@gmail.com` added on Render (admin pages were empty — requireAdmin dual condition); `ALLOWED_ORIGINS` includes both kasiro.app and onrender URL; baseline query corrected to `payment_webhook_events` (not `webhook_events`).
+
+**Kora NGN rail verified live on Render 2026-07-31 (evening):** ₦500 operator deposit end-to-end (live checkout → payment → webhook → exact credit). Required fixes along the way: enable flags + rollout were ported stale (`false`/`0` from the handoff table — set from live Replit values instead), and the client bundle needed **Clear build cache & deploy** on Render for the `VITE_KORA_MODE` build arg to reach Vite. Bugs found, queued below: `/api/payments/config` is mounted without `optionalAuth`, so `req.userId` is always undefined and `depositEligible`/`payoutEligible` are false for every user (long-standing, cosmetic — `initialize` does its own gate); same endpoint needs `Cache-Control: no-store` (304-cached anonymous responses shown to logged-in users); CSP blocks PostHog (`us.i.posthog.com` not in connect-src); stale Replit-era service worker broke sessions for returning users until unregistered (self-heals via new SW, but expect a few user reports).
+
+**Post-cutover queue (Observe phase, 7–14 days from 2026-07-31):**
+1. Daily reconcile (validate.sql in Replit workspace, vs running expectations).
+2. Stop the Replit production deployment (its workers still run against the stale DB — fence it). Keep the Replit ACCOUNT.
+3. Rotate MONITOR_TOKEN (both values exposed in session transcript) AND the Neon database password (connection string incl. password also passed through the transcript — Neon console one-click reset, then update Render `DATABASE_URL` + Bitwarden). After Replit deployment stops.
+4. Cleanup release: remove db-export endpoint + mount (route comment has the reminder box).
+5. play.kasiro.app: add as Render custom domain + flip DNS (still points at Replit).
+6. www redirect now exists via Render; NXDOMAIN fixed.
+7. Then (post-observation): numbered forward-only migration runner, ban drizzle-kit push in prod, least-privilege DB role, remaining hardening list.
+8. Market-integrity protection-state build (external_trading_started_at etc.) — queued as first code release after observation, per market-integrity-doctrine-and-spec.md §3.
+
+### 2026-07-31 (earlier) — Cutover prereq 2: db-export on Replit prod (status: ship_now, pending republish)
+
+Three code changes committed via Replit Agent, all pending a single prod republish:
+1. **`replit.nix` created** (only `pkgs.postgresql_16`) — the deployment image gets pg_dump 16; `.replit` `modules` reach the dev workspace only. Dev verified: no collision, pg_dump 16.10, all 7 workers healthy.
+2. **Gate 2 of `admin-db-export.ts` fixed** — it checked `users.role === 'super_admin'`, but `users.role` vocabulary is only user/admin/banned; `super_admin` lives exclusively in `staff_roles`. As written, no legitimately configured account could ever pass. Now queries `staff_roles` directly. All other gates + one-shot latch untouched.
+3. **`ensureAdminStaffRoles()` restored to boot path** (after `ensureOperatorUser`) — idempotent row-insert only, complies with slimmed-boot policy. **Post-republish correction:** the Replit Agent's claim that prod had no staff_roles row was false — the `super_admin` row for `oebiefie@gmail.com` has existed since 2026-04-16. The boot change is harmless insurance (0 rows inserted, correct idempotent no-op), not the fix. The real blocker was the gate-2 bug (item 2). `oebiefie@gmail.com` verified as the only admin account on prod.
+
+Discovered along the way: **`MONITOR_TOKEN` is already live on Replit prod** (unauthenticated curl → 401 "Invalid or missing token", the set-token branch; unset would 503). Verify Bitwarden value matches before cutover night.
+
+**Prereq 2 CLOSED 2026-07-31:** prod republished; unauth curl → 401; staff_roles `super_admin` row confirmed (existed since 2026-04-16).
+
+**Open before cutover night:**
+- ~~Bitwarden ↔ prod MONITOR_TOKEN match~~ — verified 2026-07-31 (curl with vault token → gate 2 "Not authenticated", token accepted).
+- pg_dump-in-prod-image is unverifiable pre-cutover (check sits behind gates 1–3; autoscale has no shell). First real test = cutover Freeze phase. Safe failure: 503, latch NOT set.
+- Replit task #172 accepted: test that admin-role-without-staff_roles cannot pass gate 2.
+- Stale Docker-specific `fix` hint in the endpoint's pg_dump 503 body — misleading on Replit path; ignore, route is deleted post-cutover.
+
+**Process lessons:**
+1. The Replit Agent's "acceptance passed" screenshot had pasted the test *description* into the shell (bash syntax error) and called it a pass — in the dev workspace, not the deployment context. Read the actual terminal output, and check *which* shell, before logging a test as green.
+2. The agent's "no staff_roles row on prod" claim was also false (row existed since 2026-04-16). Two false observations in one session: treat the agent's unverified prod-state assertions as hypotheses requiring an actual query result (with output shown) before they drive scope.
 
 **Kasiro UX improvement plan — CLOSED, all phases shipped and code-verified.** Full arc: Phase 0 (trust-breaking defects) → 1A (card declutter) → 1B (filter chip redesign, v2 after operator correction) → 1D (Naira-first copy audit) → Phase 2 (mobile trading usability) → Phase 3 (3A Results page + 3B-pre data-integrity fix; 3B Trending line deferred) → Production Reconciliation (re-verification after a live-site audit found several "shipped" items weren't actually live). Full detail and every intermediate decision is preserved in `docs/handoffs/2026-07-20-*.md` (9 documents) if any of this needs re-litigating. This entry is the consolidated final state.
 
