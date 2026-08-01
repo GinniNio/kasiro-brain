@@ -1,6 +1,17 @@
 # HANDOFF — Kasiro / Portfolio: Next Session
-_Give this to a fresh Claude/Cowork session to resume. Kasiro's production cutover is DONE. The current phase is Observe (to ~14 Aug 2026)._
-_Last updated: 31 July 2026, post-cutover. Supersedes the pre-cutover HANDOFF-NEXT-SESSION.md and the cutover sections of MIGRATION_HANDOFF.md._
+_Give this to a fresh Claude/Cowork session to resume. Kasiro's production cutover is DONE (Observe to ~14 Aug 2026). GbegeBall's hosting move is APPROVED and NEXT._
+_Last updated: 1 Aug 2026 (early hours), post-cutover. Supersedes the pre-cutover HANDOFF-NEXT-SESSION.md and the cutover sections of MIGRATION_HANDOFF.md._
+
+## 0. IF THIS IS THE GBEGEBALL SESSION — start here
+GbegeBall (repo `GinniNio/GbegeBall`, local `C:\Dev\GbegeBall`, synced to `05118ca` + tag `production-baseline-2026-07-30`) moves off Replit to the same stack as Kasiro: Render + own Neon + Cloudflare DNS. **Approved 31 Jul because GbegeBall has NO traffic** — no freeze cost, no user funds — so the one-event-at-a-time rule doesn't bite. Replit account is being downgraded to the $20 plan, NOT cancelled (Kasiro's old prod DB = fallback during Observe; workspaces stay).
+
+Sequence (use Kasiro's cutover as the template — §2 below and `kasiro-brain/domains/eng.md` 2026-07-31 entries):
+1. Read `C:\Dev\GbegeBall\docs\STATUS.md` + `production-baseline-and-migrations.md` first.
+2. Dump GbegeBall's Replit DB (no freeze needed; the dump IS the baseline). Restore-proof into a fresh Kaye-owned Neon project (PG16) — this also closes the outstanding Workstream B item.
+3. New Render service off `GinniNio/GbegeBall` main — Dockerfile/build check + env parity audit (learn from Kasiro: check VITE_* build args, CORS vars, cron/leader flags, any per-request-rebuilt config).
+4. Validate restore vs dump baseline (row counts + contest/score state).
+5. Cloudflare DNS flip; shut down the GbegeBall Replit deployment.
+Also pending in that repo: 3 failing client tests (fix, don't weaken), untracked docs/handoffs to commit, `server/workers/resolve-r32-fixtures.local.bak` to reconcile against the pulled version, then ARCHITECTURE/OPERATIONS/MIGRATIONS docs.
 
 ## 1. Who / what
 - **Operator:** Kaye — solo, non-technical; treat as devops/platform/infra + product expert. Replit Agent still available for code; verify its production-state claims against shown query output (two false claims on record).
@@ -11,7 +22,12 @@ _Last updated: 31 July 2026, post-cutover. Supersedes the pre-cutover HANDOFF-NE
 - Cutover executed 31 Jul ~15:00–17:00 UTC: freeze via Cloudflare WAF block → baseline → one-shot db-export (worked; latch now set on old Replit DB) → restore matched to six decimals (18 users, ~11K USDT) → prod seed verified by deposit-address equality → DNS switched → reopened.
 - **Verified live on new host:** trading (reconciled trade), USDT deposit address derivation, all 8 workers (CRON_LEADER=1 on Render only), admin console (ADMIN_EMAILS set), sessions, TRUST_PROXY_HOPS=2 (real client IPs), **Naira deposits end-to-end** (₦500 live: checkout.korapay.com → webhook → exact credit).
 - **NEVER verified:** NGN withdrawal/payout end-to-end. Do a small operator withdrawal during Observe.
-- Replit production deployment: shut down (or in progress) — account and workspace stay until local dev is proven.
+- Replit production deployment: SHUT DOWN. Account downgraded to $20 plan but KEPT (old prod DB = Observe-window fallback; workspaces + secrets still readable).
+- **Late catch 31 Jul:** the env port missed a batch — `GOOGLE_CLIENT_ID/SECRET` (Google sign-in), `RESEND_API_KEY/FROM_EMAIL` (all email incl. password reset), `ALERT_EMAILS_ENABLED`, `TELEGRAM_CHANNEL_ID`, `USE_LIST_PUBLIC_MARKETS`, `TATUM_API_KEY`, `FOOTBALL_DATA_API_KEY`, `PLAY_*`, `WHATSAPP_*`, `AI_INTEGRATIONS_*`. Operator was adding them from Replit Secrets. **First Kasiro check next session: confirm these are on Render, then verify Google sign-in works and a password-reset email arrives.** Google Cloud console + Resend DNS need no changes (domain unchanged).
+
+## 2b. SEV2 on night one (01 Aug) — READ BEFORE ANY KASIRO WORK
+Login broke hours after cutover: Replit Agent merged PR #11 `cce4f8e` ("audit remediation" incl. money-path fixes + constraints migration) to main, Render auto-deployed it, new code met old schema (`users.telegram_link_code_lookup`, `totp_last_used_step` missing). Fixed by idempotent ALTER + restart. Full record: `domains/eng.md` 2026-08-01 entry.
+**First Kasiro agenda now:** (1) confirm Render auto-deploy is OFF; (2) review `cce4f8e` diff — unreviewed on live money — bless or revert; (3) full schema-drift audit, every table, code vs Neon; (4) branch protection on `main`; (5) then the email/OAuth env verification below.
 
 ## 3. Observe phase (until ~14 Aug) — the rules
 - Daily reconcile: run `validate.sql` (in Replit workspace) against Neon; watch worker heartbeats (`/api/health/workers` with MONITOR_TOKEN).

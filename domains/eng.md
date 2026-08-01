@@ -248,6 +248,17 @@ Fixes applied mid-cutover: `ADMIN_EMAILS=oebiefie@gmail.com` added on Render (ad
 
 **Kora NGN rail verified live on Render 2026-07-31 (evening):** ₦500 operator deposit end-to-end (live checkout → payment → webhook → exact credit). Required fixes along the way: enable flags + rollout were ported stale (`false`/`0` from the handoff table — set from live Replit values instead), and the client bundle needed **Clear build cache & deploy** on Render for the `VITE_KORA_MODE` build arg to reach Vite. Bugs found, queued below: `/api/payments/config` is mounted without `optionalAuth`, so `req.userId` is always undefined and `depositEligible`/`payoutEligible` are false for every user (long-standing, cosmetic — `initialize` does its own gate); same endpoint needs `Cache-Control: no-store` (304-cached anonymous responses shown to logged-in users); CSP blocks PostHog (`us.i.posthog.com` not in connect-src); stale Replit-era service worker broke sessions for returning users until unregistered (self-heals via new SW, but expect a few user reports).
 
+### 2026-08-01 (early hours) — SEV2: schema drift broke login post-cutover; auto-deploy is the root hazard
+
+Symptoms: kasiro.app 500s + login failing hours after cutover. Server healthy; two stacked causes: (1) stale Replit-era service worker in the browser (second occurrence — recurs per browser profile; self-heals for users on new SW, but support reports likely); (2) real one: `getUserByEmail` 500 — deployed code expected `users.telegram_link_code_lookup` + `totp_last_used_step`, absent from the restored prod schema. Root chain: Replit Agent merged **PR #11 `cce4f8e` "Audit remediation: security hardening, money-path fixes, constraints migration, debt cleanup"** to main during Observe → **Render auto-deployed it to production** → new code, old schema. Fixed 04:30Z: idempotent `ALTER TABLE users ADD COLUMN IF NOT EXISTS …` (2 columns added), restart, SW cleanup. Login + site verified good.
+
+Consequences, binding:
+- **Render auto-deploy must be OFF** (operator action; verify next session). Deploys are button-presses until migration runner + CI gate exist.
+- **`cce4f8e` runs unreviewed on live money.** First agenda item next Kasiro session: diff it fully, bless or revert. It claims money-path fixes and a "constraints migration" — find where that migration ran (or didn't).
+- **Full schema-drift audit** (information_schema vs shared/schema.ts, every table) — users was only where it visibly broke.
+- Migration runner promoted from post-observation nicety to first post-observation task.
+- Replit Agent merging PRs to main autonomously violates the agent rules in the handoff — restate constraint to the agent; consider branch protection on main (require Kaye's review).
+
 **Post-cutover queue (Observe phase, 7–14 days from 2026-07-31):**
 1. Daily reconcile (validate.sql in Replit workspace, vs running expectations).
 2. Stop the Replit production deployment (its workers still run against the stale DB — fence it). Keep the Replit ACCOUNT.
